@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUTD Grade Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f2f8;--text2:#8b93a8;--text3:#5a6175;--blue:#4f8ef7;--blue-bg:rgba(79,142,247,0.12);--blue-border:rgba(79,142,247,0.3);--green:#34d399;--green-bg:rgba(52,211,153,0.1);--green-border:rgba(52,211,153,0.3);--amber:#fbbf24;--amber-bg:rgba(251,191,36,0.1);--amber-border:rgba(251,191,36,0.3);--red:#f87171;--red-bg:rgba(248,113,113,0.1);--red-border:rgba(248,113,113,0.3);--r:10px;--rl:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
+.shell{max-width:1100px;margin:0 auto;padding:0 24px}
+header{border-bottom:1px solid var(--border);padding:20px 0;margin-bottom:36px;animation:fadeDown .4s ease both}
+.hi{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.bi{width:38px;height:38px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#fff;letter-spacing:-.5px}
+.bn{font-size:17px;font-weight:600}
+.bs{font-size:12px;color:var(--text3);margin-top:1px}
+.pill{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border2);border-radius:99px;font-size:12px;color:var(--text2);background:var(--bg2)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+.dot.a{background:var(--amber)}
+.nav-tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:4px;margin-bottom:28px;width:fit-content;flex-wrap:wrap;animation:fadeUp .4s .1s ease both}
+.nt{padding:8px 20px;border-radius:9px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .2s;border:none;background:transparent;font-family:'DM Sans',sans-serif}
+.nt:hover{color:var(--text);background:var(--bg3)}
+.nt.active{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
+.panel{display:none;animation:fadeUp .3s ease both}
+.panel.active{display:block}
+.sr{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px}
+.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:18px 20px;transition:border-color .2s}
+.sc:hover{border-color:var(--border2)}
+.sl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.sv{font-size:28px;font-weight:600;line-height:1;margin-bottom:6px;font-family:'DM Mono',monospace}
+.ss{font-size:12px;color:var(--text2)}
+.sb{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 300px;gap:16px;margin-bottom:28px}
+@media(max-width:720px){.two{grid-template-columns:1fr}}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px;transition:border-color .2s}
+.card:hover{border-color:var(--border2)}
+.ct{font-size:13px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px}
+.tb{margin-bottom:20px}
+.tb:last-child{margin-bottom:0}
+.th{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.tn{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
+.tg{font-size:12px;font-family:'DM Mono',monospace}
+.mr{display:grid;grid-template-columns:1fr 44px 56px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.mr:last-child{border:none}
+.mn{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc{font-size:12px;color:var(--text3);text-align:center;font-family:'DM Mono',monospace}
+.g{font-size:11px;font-weight:500;padding:3px 0;border-radius:6px;text-align:center;font-family:'DM Mono',monospace}
+.gA{background:rgba(52,211,153,.15);color:#34d399}.gAm{background:rgba(52,211,153,.1);color:#6ee7b7}
+.gBp{background:rgba(79,142,247,.15);color:#93bbfb}.gB{background:rgba(79,142,247,.1);color:#7aaaf9}
+.gBm{background:rgba(251,191,36,.12);color:#fbbf24}.gC{background:rgba(248,113,113,.12);color:#f87171}
+.gD{background:rgba(248,113,113,.2);color:#ef4444;border:1px solid rgba(248,113,113,.3)}.gP{background:var(--bg3);color:var(--text3)}
+.trow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tlbl{font-size:11px;color:var(--text3);min-width:72px;font-family:'DM Mono',monospace}
+.ttrack{flex:1;height:6px;background:var(--bg3);border-radius:99px;overflow:hidden}
+.tfill{height:100%;border-radius:99px;transition:width .6s ease}
+.tnum{font-size:12px;font-weight:500;min-width:32px;text-align:right;font-family:'DM Mono',monospace}
+.hr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.hr:last-child{border:none}
+.hr.cur{background:var(--blue-bg);margin:0 -22px;padding:10px 22px}
+.hrn{font-size:13px}.hrr{font-size:11px;color:var(--text3);margin-top:1px;font-family:'DM Mono',monospace}
+.hb{font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px}
+.hbc{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.hba{background:var(--bg3);color:var(--text3)}
+.hbb{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.as{border-top:1px solid var(--border);padding-top:16px;margin-top:16px}
+.at{font-size:12px;color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px}
+.af{display:flex;gap:8px;flex-wrap:wrap}
+.af input,.af select{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border-color .2s}
+.af input{flex:1;min-width:160px}
+.af input:focus{border-color:var(--blue)}
+.af select{min-width:80px}
+.af select option{background:var(--bg3)}
+.abtn{background:var(--blue);color:#fff;border:none;border-radius:var(--r);padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .1s}
+.abtn:hover{opacity:.85}
+.abtn:active{transform:scale(.97)}
+.al{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.ai{display:grid;grid-template-columns:1fr 44px 56px 28px;gap:8px;align-items:center;padding:6px 10px;background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:8px;font-size:13px}
+.rb{background:none;border:none;color:var(--text3);cursor:pointer;font-size:15px;padding:0;transition:color .2s;line-height:1}
+.rb:hover{color:var(--red)}
+.tg2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+@media(max-width:600px){.tg2{grid-template-columns:repeat(2,1fr)}}
+.tc{padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .2s}
+.tc:hover{border-color:var(--border2)}
+.tc.active{background:var(--blue-bg);border-color:var(--blue-border)}
+.tcl{font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.tc.active .tcl{color:var(--blue)}
+.tcv{font-size:14px;font-weight:600;font-family:'DM Mono',monospace}
+.tc.active .tcv{color:var(--blue)}
+.rbox{padding:14px 16px;border-radius:var(--r);margin-bottom:14px;border:1px solid}
+.rbox.ok{background:var(--green-bg);border-color:var(--green-border)}
+.rbox.warn{background:var(--amber-bg);border-color:var(--amber-border)}
+.rbox.bad{background:var(--red-bg);border-color:var(--red-border)}
+.rl{font-size:11px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.rbox.ok .rl{color:var(--green)}.rbox.warn .rl{color:var(--amber)}.rbox.bad .rl{color:var(--red)}
+.rv{font-size:18px;font-weight:600;font-family:'DM Mono',monospace}
+.rbox.ok .rv{color:var(--green)}.rbox.warn .rv{color:var(--amber)}.rbox.bad .rv{color:var(--red)}
+.rs{font-size:12px;margin-top:3px;color:var(--text2)}
+.wg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:500px){.wg{grid-template-columns:repeat(2,1fr)}}
+.wc{padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r)}
+.wg2{font-size:12px;font-weight:500;margin-bottom:3px;font-family:'DM Mono',monospace}
+.wp{font-size:13px;font-weight:500;font-family:'DM Mono',monospace}
+.wn{font-size:11px;margin-top:3px}
+.wok{color:var(--green)}.wbad{color:var(--red)}
+.mg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.fld label{font-size:12px;color:var(--text3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.fld input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'DM Mono',monospace;font-size:15px;padding:10px 12px;outline:none;transition:border-color .2s}
+.fld input:focus{border-color:var(--blue)}
+.pw{margin-bottom:20px}
+.plbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:6px}
+.ptr{height:8px;background:var(--bg3);border-radius:99px;overflow:hidden}
+.pfl{height:100%;border-radius:99px;background:var(--blue);transition:width .8s ease}
+.div{height:1px;background:var(--border);margin:16px 0}
+.inote{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--text2);margin-bottom:14px}
+.ss2{display:flex;flex-direction:column;gap:16px}
+footer{margin-top:48px;padding:24px 0;border-top:1px solid var(--border);font-size:12px;color:var(--text3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+footer a{color:var(--blue);text-decoration:none}
+footer a:hover{text-decoration:underline}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.s1{animation:fadeUp .4s .05s ease both}.s2{animation:fadeUp .4s .1s ease both}.s3{animation:fadeUp .4s .15s ease both}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="hi">
+      <div class="brand">
+        <div class="bi">GPA</div>
+        <div><div class="bn">SUTD Grade Tracker</div><div class="bs">Computer Science & Design</div></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <div class="pill"><div class="dot a"></div>Seeking internship May 2026</div>
+        <div class="pill" id="live-pill">CGPA: 3.15</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="nt active" onclick="showTab('overview',this)">Overview</button>
+    <button class="nt" onclick="showTab('transcript',this)">Transcript</button>
+    <button class="nt" onclick="showTab('planner',this)">Honours Planner</button>
+    <button class="nt" onclick="showTab('sim',this)">What-if Simulator</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="tab-overview">
+    <div class="sr s1">
+      <div class="sc"><div class="sl">Current CGPA</div><div class="sv" id="stat-gpa">3.15</div><div class="ss">out of 5.0</div><span class="sb" id="stat-cls" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">Honours</span></div>
+      <div class="sc"><div class="sl">Graded CUs done</div><div class="sv">120</div><div class="ss">of ~240 total</div><span class="sb" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)">50% complete</span></div>
+      <div class="sc"><div class="sl">Best term GPA</div><div class="sv">3.75</div><div class="ss">2024 Sep–Dec</div><span class="sb" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)">Merit level</span></div>
+      <div class="sc"><div class="sl">Toughest term</div><div class="sv" style="color:var(--red)">2.63</div><div class="ss">2025 Jan–Apr</div><span class="sb" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)">D in 50.001</span></div>
+    </div>
+    <div class="two s2">
+      <div class="card">
+        <div class="ct">GPA trend by term</div>
+        <div class="pw"><div class="plbl"><span>Degree progress</span><span>120 / 240 CUs</span></div><div class="ptr"><div class="pfl" style="width:50%"></div></div></div>
+        <div class="div"></div>
+        <div style="margin-top:16px">
+          <div class="trow"><span class="tlbl">2024 Jan</span><div class="ttrack"><div class="tfill" style="width:70%;background:#4f8ef7"></div></div><span class="tnum" style="color:#4f8ef7">3.50</span></div>
+          <div class="trow"><span class="tlbl">2024 Sep</span><div class="ttrack"><div class="tfill" style="width:75%;background:#34d399"></div></div><span class="tnum" style="color:#34d399">3.75</span></div>
+          <div class="trow"><span class="tlbl">2025 Jan</span><div class="ttrack"><div class="tfill" style="width:52.6%;background:#f87171"></div></div><span class="tnum" style="color:#f87171">2.63</span></div>
+          <div class="trow"><span class="tlbl">2025 May</span><div class="ttrack"><div class="tfill" style="width:62.6%;background:#fbbf24"></div></div><span class="tnum" style="color:#fbbf24">3.13</span></div>
+        </div>
+        <div class="div"></div>
+        <div style="font-size:12px;color:var(--text3)">The D in <span style="color:var(--text2);font-family:'DM Mono',monospace">50.001</span> in Jan 2025 pulled CGPA from 3.60 → 3.17. Recovery started in May 2025 with an A- in 02.177.</div>
+      </div>
+      <div class="ss2">
+        <div class="card">
+          <div class="ct">Honours scale</div>
+          <div class="hr"><div><div class="hrn">Highest Distinction</div><div class="hrr">4.50 and above</div></div><span class="hb hba">−1.35</span></div>
+          <div class="hr"><div><div class="hrn">Distinction</div><div class="hrr">4.00 – 4.49</div></div><span class="hb hba">−0.85</span></div>
+          <div class="hr"><div><div class="hrn">Merit</div><div class="hrr">3.50 – 3.99</div></div><span class="hb hba">−0.35</span></div>
+          <div class="hr cur"><div><div class="hrn" style="font-weight:500;color:var(--blue)">Honours</div><div class="hrr" style="color:var(--blue)">3.00 – 3.49</div></div><span class="hb hbc">You</span></div>
+          <div class="hr"><div><div class="hrn">Pass</div><div class="hrr">2.00 – 2.99</div></div><span class="hb hbb">+1.15 above</span></div>
+        </div>
+        <div class="card">
+          <div class="ct">Key modules</div>
+          <div class="mr"><span class="mn" style="color:var(--red)">50.001 Intro IS&P</span><span class="mc">12</span><span class="g gD">D</span></div>
+          <div class="mr"><span class="mn" style="color:var(--amber)">50.005 CSE</span><span class="mc">12</span><span class="g gC">C</span></div>
+          <div class="mr"><span class="mn" style="color:var(--green)">02.177 Wind & Water</span><span class="mc">12</span><span class="g gAm">A-</span></div>
+          <div style="font-size:11px;color:var(--text3);margin-top:10px">Retaking 50.001 for B+ would recover ~36 cumulative grade-points</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSCRIPT -->
+  <div class="panel" id="tab-transcript">
+    <div class="inote s1">Pass/Fail modules (Design Thinking projects, Freshmore mods) are excluded from GPA. Only letter-graded modules count toward your CGPA.</div>
+    <div class="card s2">
+      <div class="ct">Full academic record</div>
+      <div class="tb">
+        <div class="th"><span class="tn">2023 Sep–Dec — Freshmore</span><span class="tg" style="color:var(--text3)">Not counted</span></div>
+        <div class="mr"><span class="mn">Freshmore Communication Programme</span><span class="mc">—</span><span class="g gP">S</span></div>
+        <div class="mr"><span class="mn">Design Thinking Project I</span><span class="mc">—</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Social Science: Behaviour, Culture & Society</span><span class="mc">12</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Modelling and Analysis</span><span class="mc">12</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Computational Thinking For Design</span><span class="mc">12</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Physical World</span><span class="mc">12</span><span class="g gP">P</span></div>
+      </div>
+      <div class="tb">
+        <div class="th"><span class="tn">2024 Jan–Apr</span><span class="tg" style="color:var(--blue)">3.50</span></div>
+        <div class="mr"><span class="mn">Design Thinking Project II</span><span class="mc">—</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Design Thinking and Innovation</span><span class="mc">12</span><span class="g gBp">B+</span></div>
+        <div class="mr"><span class="mn">Science for a Sustainable World</span><span class="mc">12</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Technological World</span><span class="mc">12</span><span class="g gBm">B-</span></div>
+        <div class="mr"><span class="mn">Modeling Space and Systems</span><span class="mc">12</span><span class="g gB">B</span></div>
+      </div>
+      <div class="tb">
+        <div class="th"><span class="tn">2024 Sep–Dec</span><span class="tg" style="color:var(--green)">3.75</span></div>
+        <div class="mr"><span class="mn">Design Thinking Project III</span><span class="mc">—</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Global Humanities: Lit, Philosophy & Ethics</span><span class="mc">12</span><span class="g gBp">B+</span></div>
+        <div class="mr"><span class="mn">Data Driven World</span><span class="mc">12</span><span class="g gB">B</span></div>
+        <div class="mr"><span class="mn">Modelling Uncertainty</span><span class="mc">12</span><span class="g gP">P</span></div>
+        <div class="mr"><span class="mn">Designing Energy Systems</span><span class="mc">12</span><span class="g gP">P</span></div>
+      </div>
+      <div class="tb">
+        <div class="th"><span class="tn">2025 Jan–Apr</span><span class="tg" style="color:var(--red)">2.63 ↓</span></div>
+        <div class="mr"><span class="mn">Game of Histories</span><span class="mc">12</span><span class="g gB">B</span></div>
+        <div class="mr"><span class="mn" style="color:var(--red)">Intro to Information Systems & Programming</span><span class="mc">12</span><span class="g gD">D</span></div>
+        <div class="mr"><span class="mn">Computation Structures</span><span class="mc">12</span><span class="g gBm">B-</span></div>
+        <div class="mr"><span class="mn">Algorithms</span><span class="mc">12</span><span class="g gBm">B-</span></div>
+      </div>
+      <div class="tb">
+        <div class="th"><span class="tn">2025 May–Aug</span><span class="tg" style="color:var(--amber)">3.13</span></div>
+        <div class="mr"><span class="mn" style="color:var(--green)">On Wind & Water: Metaphysics, Design & Tech</span><span class="mc">12</span><span class="g gAm">A-</span></div>
+        <div class="mr"><span class="mn">Elements of Software Construction</span><span class="mc">12</span><span class="g gBm">B-</span></div>
+        <div class="mr"><span class="mn">Computer System Engineering</span><span class="mc">12</span><span class="g gC">C</span></div>
+        <div class="mr"><span class="mn">Foundations of Cybersecurity</span><span class="mc">12</span><span class="g gBm">B-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANNER -->
+  <div class="panel" id="tab-planner">
+    <div class="inote s1">Based on your transcript: 120 graded CUs done, CGPA 3.15. Assumes ~120 graded CUs remaining (~3 terms). Use the Simulator tab to add projected modules for a more precise forecast.</div>
+    <div class="card s2">
+      <div class="ct">Select your target honours class</div>
+      <div class="tg2">
+        <div class="tc" onclick="selTarget(this,3.50,'Merit')"><div class="tcl">Target</div><div class="tcv">Merit 3.50</div></div>
+        <div class="tc active" onclick="selTarget(this,4.00,'Distinction')"><div class="tcl">Target</div><div class="tcv">Distinction 4.00</div></div>
+        <div class="tc" onclick="selTarget(this,4.50,'Highest Distinction')"><div class="tcl">Target</div><div class="tcv">Highest 4.50</div></div>
+        <div class="tc" onclick="selTarget(this,3.00,'Honours (hold)')"><div class="tcl">Target</div><div class="tcv">Hold Honours</div></div>
+      </div>
+      <div id="plan-out"></div>
+      <div class="div"></div>
+      <div style="font-size:12px;color:var(--text3)">Tip: S/U-ing a weak module reduces your graded CU count — each remaining graded module then carries more weight. Check your programme handbook for per-term S/U limits and eligible module types.</div>
+    </div>
+  </div>
+
+  <!-- SIMULATOR -->
+  <div class="panel" id="tab-sim">
+    <div class="card s1">
+      <div class="ct">Your current standing</div>
+      <div class="mg">
+        <div class="fld"><label>Current CGPA</label><input type="number" id="sg" value="3.15" min="0" max="5" step="0.01" oninput="runSim()"></div>
+        <div class="fld"><label>Graded CUs completed</label><input type="number" id="sc" value="120" min="0" max="300" step="12" oninput="runSim()"></div>
+        <div class="fld"><label>Total degree CUs</label><input type="number" id="st" value="240" min="120" max="360" step="12" oninput="runSim()"></div>
+        <div class="fld"><label>Target CGPA</label><input type="number" id="starget" value="4.00" min="0" max="5" step="0.01" oninput="runSim()"></div>
+      </div>
+      <div class="as">
+        <div class="at">Add projected modules for next term</div>
+        <div class="af">
+          <input type="text" id="sim-mod" placeholder="Module name (e.g. 50.045 Info Retrieval)">
+          <select id="sim-grade">
+            <option>A+</option><option>A</option><option>A-</option>
+            <option>B+</option><option selected>B</option><option>B-</option>
+            <option>C+</option><option>C</option><option>D</option>
+          </select>
+          <button class="abtn" onclick="simAdd()">+ Add</button>
+        </div>
+        <div class="al" id="sim-list"></div>
+      </div>
+    </div>
+    <div class="card s2" style="margin-top:16px">
+      <div class="ct">Simulation results</div>
+      <div id="sim-out"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>SUTD Grade Tracker — built by <a href="https://yeelaiii.github.io" target="_blank">Elijah Soon</a></span>
+    <span><a href="https://github.com/yeelaiii/sutd-grade-tracker" target="_blank">github.com/yeelaiii/sutd-grade-tracker</a></span>
+  </footer>
+</div>
+
+<script>
+const GP={'A+':5,'A':5,'A-':4.5,'B+':4,'B':3.5,'B-':3,'C+':2.5,'C':2,'D+':1.5,'D':1,'F':0};
+const SC=[{g:'A+/A',p:5,c:'#34d399'},{g:'A-',p:4.5,c:'#6ee7b7'},{g:'B+',p:4,c:'#93bbfb'},{g:'B',p:3.5,c:'#7aaaf9'},{g:'B-',p:3,c:'#fbbf24'},{g:'C',p:2,c:'#f87171'}];
+let mods=[],curT=4,curL='Distinction';
+
+function hClass(g){return g>=4.5?'Highest Distinction':g>=4?'Distinction':g>=3.5?'Merit':g>=3?'Honours':g>=2?'Pass':'Fail'}
+function pLabel(p){if(p>=4.75)return'A+/A (5.0 pts)';if(p>=4.25)return'A- (4.5 pts)';if(p>=3.75)return'B+ (4.0 pts)';if(p>=3.25)return'B (3.5 pts)';if(p>=2.75)return'B- (3.0 pts)';if(p>=2.25)return'C+ (2.5 pts)';return'C or below'}
+
+function showTab(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nt').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='planner')calcPlan(curT,curL);
+  if(id==='sim')runSim();
+}
+
+function selTarget(el,gpa,lbl){
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  curT=gpa;curL=lbl;
+  calcPlan(gpa,lbl);
+}
+
+function calcPlan(tgt,lbl){
+  const cg=3.15,cc=120,fc=120,tc=240;
+  const cp=cg*cc,need=tgt*tc-cp,req=need/fc,mx=(cp+5*fc)/tc;
+  let h='';
+  if(req<=0){h=`<div class="rbox ok"><div class="rl">Already achieved!</div><div class="rv">CGPA ${cg} meets ${lbl}</div><div class="rs">Keep this pace to lock it in</div></div>`}
+  else if(req>5){h=`<div class="rbox bad"><div class="rl">Not achievable</div><div class="rv">Max possible: ${mx.toFixed(2)}</div><div class="rs">${lbl} requires ${tgt.toFixed(2)} — even with all A+ you'd reach ${mx.toFixed(2)}</div></div>`}
+  else{const cl=req>=4.5?'bad':req>=3.5?'warn':'ok';h=`<div class="rbox ${cl}"><div class="rl">Minimum avg needed across remaining ~120 CUs</div><div class="rv">${pLabel(req)}</div><div class="rs">Need ${req.toFixed(2)} avg GPA points to reach ${lbl} (${tgt.toFixed(2)} CGPA)</div></div>`}
+  h+=`<div class="wg">`;
+  SC.forEach(s=>{const proj=(cp+s.p*fc)/tc,m=proj>=tgt;h+=`<div class="wc"><div class="wg2" style="color:${s.c}">${s.g}</div><div class="wp">${proj.toFixed(2)} CGPA</div><div class="wn ${m?'wok':'wbad'}">${m?'✓ '+hClass(proj):'✗ short by '+(tgt-proj).toFixed(2)}</div></div>`});
+  h+=`</div>`;
+  document.getElementById('plan-out').innerHTML=h;
+}
+
+function simAdd(){
+  const name=document.getElementById('sim-mod').value.trim();
+  const grade=document.getElementById('sim-grade').value;
+  if(!name)return;
+  const id=Date.now();
+  mods.push({id,name,grade,pts:GP[grade]||3.5});
+  document.getElementById('sim-mod').value='';
+  renderMods();runSim();
+}
+
+function simRm(id){mods=mods.filter(m=>m.id!==id);renderMods();runSim()}
+
+function renderMods(){
+  const el=document.getElementById('sim-list');
+  if(!mods.length){el.innerHTML='';return}
+  el.innerHTML=mods.map(m=>`<div class="ai"><span style="font-size:13px">${m.name}</span><span style="font-size:12px;color:var(--text3);text-align:center;font-family:'DM Mono',monospace">12</span><span style="font-size:11px;font-weight:500;color:var(--blue);font-family:'DM Mono',monospace">${m.grade}</span><button class="rb" onclick="simRm(${m.id})">×</button></div>`).join('')
+}
+
+function runSim(){
+  const cg=parseFloat(document.getElementById('sg').value)||3.15;
+  const cc=parseFloat(document.getElementById('sc').value)||120;
+  const tc=parseFloat(document.getElementById('st').value)||240;
+  const tgt=parseFloat(document.getElementById('starget').value)||4;
+  const ep=mods.reduce((s,m)=>s+m.pts*12,0),ec=mods.length*12;
+  const dc=cc+ec,dg=dc>0?(cg*cc+ep)/dc:cg,rc=tc-dc;
+  const need=tgt*tc-dg*dc,req=rc>0?need/rc:0,mx=rc>0?(dg*dc+5*rc)/tc:dg;
+  document.getElementById('stat-gpa').textContent=dg.toFixed(2);
+  document.getElementById('live-pill').textContent='CGPA: '+dg.toFixed(2);
+  document.getElementById('stat-cls').textContent=hClass(dg);
+  let h=`<div class="sr" style="margin-bottom:14px">
+    <div class="sc"><div class="sl">Projected CGPA</div><div class="sv" style="font-size:22px">${dg.toFixed(2)}</div><div class="ss">${hClass(dg)}</div></div>
+    <div class="sc"><div class="sl">CUs done (w/ projected)</div><div class="sv" style="font-size:22px">${dc}</div><div class="ss">of ${tc} total</div></div>
+    <div class="sc"><div class="sl">CUs remaining</div><div class="sv" style="font-size:22px">${rc}</div><div class="ss">after these modules</div></div>
+  </div>`;
+  if(req<=0){h+=`<div class="rbox ok"><div class="rl">Target achieved</div><div class="rv">CGPA ${dg.toFixed(2)} ≥ ${tgt.toFixed(2)}</div><div class="rs">Keep going to lock it in</div></div>`}
+  else if(req>5){h+=`<div class="rbox bad"><div class="rl">Not achievable</div><div class="rv">Max possible: ${mx.toFixed(2)}</div><div class="rs">Target of ${tgt.toFixed(2)} cannot be reached with ${rc} CUs remaining</div></div>`}
+  else{const cl=req>=4.5?'bad':req>=3.5?'warn':'ok';h+=`<div class="rbox ${cl}"><div class="rl">Required avg for remaining ${rc} CUs</div><div class="rv">${pLabel(req)}</div><div class="rs">Need ${req.toFixed(2)} avg GPA points to reach ${tgt.toFixed(2)} CGPA</div></div>`}
+  h+=`<div class="wg">`;
+  SC.forEach(s=>{const proj=rc>0?(dg*dc+s.p*rc)/tc:dg,m=proj>=tgt;h+=`<div class="wc"><div class="wg2" style="color:${s.c}">${s.g}</div><div class="wp">${proj.toFixed(2)} CGPA</div><div class="wn ${m?'wok':'wbad'}">${m?'✓ '+hClass(proj):'✗ short by '+(tgt-proj).toFixed(2)}</div></div>`});
+  h+=`</div>`;
+  document.getElementById('sim-out').innerHTML=h;
+}
+
+calcPlan(4,'Distinction');runSim();
+</script>
+</body>
+</html>
