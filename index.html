@@ -4,254 +4,299 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SUTD Grade Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f7f8fa;--bg2:#fff;--bg3:#f1f3f7;--bg4:#e8ecf2;
-  --border:#e3e7ee;--border2:#c9d0dc;
-  --text:#1c1f26;--text2:#5c6475;--text3:#9ba3b2;
-  --accent:#2563eb;--accent-l:#eff4ff;--accent-b:#c7d8ff;
-  --green:#059669;--green-l:#ecfdf5;--green-b:#a7f3d0;
-  --amber:#d97706;--amber-l:#fffbeb;--amber-b:#fde68a;
-  --red:#dc2626;--red-l:#fef2f2;--red-b:#fecaca;
-  --r:10px;--rl:14px;
-  --font:'Plus Jakarta Sans',sans-serif;
-  --mono:'DM Mono',monospace;
-  --sh:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
-  --sh2:0 4px 20px rgba(0,0,0,.10);
+:root {
+  --bg: #f5f6f8; --bg2: #fff; --bg3: #f0f2f6; --bg4: #e5e8ef;
+  --border: #e2e5ec; --border2: #c8cdd9;
+  --text: #16181f; --text2: #5a6275; --text3: #99a0b0;
+  --accent: #2563eb; --accent-l: #eff4ff; --accent-b: #c3d4ff;
+  --green: #059669; --green-l: #ecfdf5; --green-b: #6ee7b7;
+  --amber: #b45309; --amber-l: #fffbeb; --amber-b: #fcd34d;
+  --red: #dc2626; --red-l: #fef2f2; --red-b: #fca5a5;
+  --r: 10px; --rl: 14px; --rxl: 20px;
+  --font: 'Geist', 'Plus Jakarta Sans', sans-serif;
+  --mono: 'DM Mono', monospace;
+  --sh: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --sh2: 0 8px 30px rgba(0,0,0,.12);
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.6;min-height:100vh}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.6; min-height: 100vh; }
+::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
 
 /* ── TOPBAR ── */
-.topbar{background:var(--bg2);border-bottom:1px solid var(--border);height:54px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.logo-icon svg{width:16px;height:16px}
-.logo-name{font-size:15px;font-weight:600}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.cgpa-pill{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:99px;padding:5px 12px;font-size:13px}
-.cgpa-pill .lbl{color:var(--text2)}
-.cgpa-pill .num{font-weight:600;font-family:var(--mono)}
-.reset-btn{font-size:12px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:var(--font)}
-.reset-btn:hover{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
+.topbar {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  height: 52px; padding: 0 24px; display: flex; align-items: center;
+  justify-content: space-between; position: sticky; top: 0; z-index: 200;
+  box-shadow: var(--sh);
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon { width: 28px; height: 28px; background: var(--accent); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+.logo-icon svg { width: 15px; height: 15px; }
+.logo-name { font-size: 14px; font-weight: 600; letter-spacing: -.2px; }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.cgpa-pill { display: none; align-items: center; gap: 6px; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; padding: 4px 12px; font-size: 13px; }
+.cgpa-pill.show { display: flex; }
+.cgpa-pill .lbl { color: var(--text2); }
+.cgpa-pill .num { font-weight: 600; font-family: var(--mono); }
+.topbar-btn { font-size: 12px; color: var(--text2); background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; cursor: pointer; font-family: var(--font); display: none; transition: all .15s; }
+.topbar-btn.show { display: block; }
+.topbar-btn:hover { background: var(--red-l); color: var(--red); border-color: var(--red-b); }
 
 /* ── TABS ── */
-.tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:2px;overflow-x:auto}
-.tab{padding:11px 16px;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px}
-.tab svg{width:13px;height:13px}
-.tab:hover{color:var(--text)}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-bar { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 24px; display: none; overflow-x: auto; }
+.tab-bar.show { display: flex; }
+.tab { padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--text2); border: none; background: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all .15s; display: flex; align-items: center; gap: 6px; font-family: var(--font); }
+.tab svg { width: 13px; height: 13px; }
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* ── LAYOUT ── */
-.content{max-width:860px;margin:0 auto;padding:28px 24px}
-.page{display:none}.page.active{display:block;animation:fadeUp .2s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.content { max-width: 840px; margin: 0 auto; padding: 28px 24px; }
+.page { display: none; }
+.page.active { display: block; animation: fadeUp .2s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── CARDS ── */
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px;box-shadow:var(--sh);margin-bottom:16px}
-.card:last-child{margin-bottom:0}
-.card-title{font-size:14px;font-weight:600;margin-bottom:3px}
-.card-sub{font-size:12px;color:var(--text2);margin-bottom:16px}
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); padding: 20px 22px; box-shadow: var(--sh); margin-bottom: 14px; }
+.card:last-child { margin-bottom: 0; }
+.card-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.card-sub { font-size: 12px; color: var(--text2); margin-bottom: 16px; }
 
 /* ── BADGES ── */
-.badge{display:inline-block;font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:99px;border:1px solid transparent}
-.badge-green{background:var(--green-l);color:var(--green);border-color:var(--green-b)}
-.badge-amber{background:var(--amber-l);color:var(--amber);border-color:var(--amber-b)}
-.badge-red{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
-.badge-blue{background:var(--accent-l);color:var(--accent);border-color:var(--accent-b)}
-.badge-grey{background:var(--bg3);color:var(--text2);border-color:var(--border)}
+.badge { display: inline-flex; align-items: center; font-size: 11px; font-family: var(--mono); padding: 3px 9px; border-radius: 99px; border: 1px solid transparent; white-space: nowrap; }
+.bg { background: var(--green-l); color: var(--green); border-color: var(--green-b); }
+.ba { background: var(--amber-l); color: var(--amber); border-color: var(--amber-b); }
+.br { background: var(--red-l); color: var(--red); border-color: var(--red-b); }
+.bb { background: var(--accent-l); color: var(--accent); border-color: var(--accent-b); }
+.bgr { background: var(--bg3); color: var(--text2); border-color: var(--border); }
 
-/* ── GRADE TAGS ── */
-.gt{display:inline-block;font-size:11px;font-weight:500;font-family:var(--mono);padding:2px 9px;border-radius:6px;text-align:center;min-width:34px;border:1px solid transparent}
-.g-ap{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
-.g-am{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
-.g-bp{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
-.g-b{background:#f0f9ff;color:#0369a1;border-color:#bae6fd}
-.g-bm{background:#fffbeb;color:#92400e;border-color:#fde68a}
-.g-c{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
-.g-cc{background:#fef2f2;color:#991b1b;border-color:#fecaca}
-.g-d{background:#fef2f2;color:#b91c1c;border-color:#fca5a5}
-.g-f{background:#fef2f2;color:#7f1d1d;border-color:#f87171}
-.g-p{background:var(--bg3);color:var(--text3);border-color:var(--border)}
+/* ── GRADE CHIPS ── */
+.gc { display: inline-block; font-size: 11px; font-weight: 500; font-family: var(--mono); padding: 2px 8px; border-radius: 6px; min-width: 32px; text-align: center; border: 1px solid transparent; }
+.gc-ap { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+.gc-am { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+.gc-bp { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+.gc-b  { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+.gc-bm { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+.gc-c  { background: #fff7ed; color: #9a3412; border-color: #fed7aa; }
+.gc-cc { background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+.gc-d  { background: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
+.gc-f  { background: #fef2f2; color: #7f1d1d; border-color: #f87171; }
+.gc-p  { background: var(--bg3); color: var(--text3); border-color: var(--border); }
 
 /* ── FORMS ── */
-.field{margin-bottom:14px}
-.field label{font-size:12px;font-weight:500;color:var(--text2);display:block;margin-bottom:5px}
-input[type=text],input[type=number],select,textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s}
-input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-select option{background:#fff}
-textarea{resize:vertical;min-height:80px}
+.field { margin-bottom: 14px; }
+.field label { font-size: 12px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; }
+input, select, textarea { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font); font-size: 13px; padding: 9px 12px; outline: none; transition: border-color .15s, box-shadow .15s; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.09); }
 
 /* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:13px;font-weight:500;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap}
-.btn svg{width:14px;height:14px}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:#1d4ed8}
-.btn-ghost{background:var(--bg3);color:var(--text);border-color:var(--border)}
-.btn-ghost:hover{background:var(--bg4)}
-.btn-danger{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
-.btn-danger:hover{background:#fee2e2}
-.btn-sm{padding:6px 12px;font-size:12px}
-.btn-full{width:100%;justify-content:center}
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 9px 18px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: all .15s; white-space: nowrap; }
+.btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.btn-p { background: var(--accent); color: #fff; }
+.btn-p:hover { background: #1d4ed8; }
+.btn-s { background: var(--bg3); color: var(--text); border-color: var(--border); }
+.btn-s:hover { background: var(--bg4); }
+.btn-d { background: var(--red-l); color: var(--red); border-color: var(--red-b); }
+.btn-d:hover { background: #fee2e2; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-full { width: 100%; justify-content: center; }
 
-/* ── ONBOARDING ── */
-.onboard-wrap{max-width:560px;margin:0 auto;padding:48px 24px}
-.onboard-step{display:none}.onboard-step.active{display:block;animation:fadeUp .25s ease}
+/* ══ ONBOARDING ══ */
+.ob-wrap { max-width: 520px; margin: 0 auto; padding: 52px 24px 32px; }
+.ob-step { display: none; animation: fadeUp .25s ease; }
+.ob-step.active { display: block; }
 
-.step-indicator{display:flex;align-items:center;gap:6px;margin-bottom:32px}
-.step-dot{width:8px;height:8px;border-radius:50%;background:var(--bg4);transition:background .3s}
-.step-dot.done{background:var(--accent)}
-.step-dot.active{background:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
-.step-line{flex:1;height:1px;background:var(--border)}
-.step-line.done{background:var(--accent)}
+.progress { display: flex; align-items: center; gap: 4px; margin-bottom: 36px; }
+.p-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--bg4); transition: all .3s; }
+.p-dot.done { background: var(--accent); }
+.p-dot.cur { background: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.18); }
+.p-line { flex: 1; height: 1px; background: var(--border); transition: background .3s; }
+.p-line.done { background: var(--accent); }
 
-.onboard-title{font-size:24px;font-weight:600;margin-bottom:8px;letter-spacing:-.3px}
-.onboard-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.7}
+.ob-title { font-size: 26px; font-weight: 600; letter-spacing: -.5px; margin-bottom: 8px; }
+.ob-sub { font-size: 14px; color: var(--text2); line-height: 1.75; margin-bottom: 28px; }
 
-.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.option-card{padding:16px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;background:var(--bg2);text-align:left}
-.option-card:hover{border-color:var(--border2);background:var(--bg3)}
-.option-card.selected{border-color:var(--accent);background:var(--accent-l)}
-.option-card .oc-icon{font-size:20px;margin-bottom:8px;display:block}
-.option-card .oc-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
-.option-card.selected .oc-title{color:var(--accent)}
-.option-card .oc-sub{font-size:12px;color:var(--text2);line-height:1.5}
+.opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+.opt { padding: 16px; border: 1.5px solid var(--border); border-radius: var(--r); cursor: pointer; transition: all .15s; background: var(--bg2); }
+.opt:hover { border-color: var(--border2); background: var(--bg3); }
+.opt.sel { border-color: var(--accent); background: var(--accent-l); }
+.opt-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+.opt-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; color: var(--text); }
+.opt.sel .opt-title { color: var(--accent); }
+.opt-sub { font-size: 12px; color: var(--text2); line-height: 1.5; }
 
-/* ── UPLOAD ZONE ── */
-.upload-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg3)}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--accent-l)}
-.upload-zone .uz-icon{font-size:28px;margin-bottom:8px;display:block}
-.upload-zone .uz-title{font-size:14px;font-weight:500;margin-bottom:4px}
-.upload-zone .uz-sub{font-size:12px;color:var(--text2)}
-#file-input{display:none}
+/* Upload zone */
+.upload-zone { border: 2px dashed var(--border2); border-radius: var(--r); padding: 28px 20px; text-align: center; cursor: pointer; transition: all .2s; background: var(--bg3); margin-bottom: 10px; }
+.upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--accent-l); }
+.uz-icon { font-size: 26px; margin-bottom: 6px; display: block; }
+.uz-title { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.uz-sub { font-size: 12px; color: var(--text2); }
+#file-input { display: none; }
 
-.upload-result{padding:14px;background:var(--green-l);border:1px solid var(--green-b);border-radius:var(--r);margin-top:12px;font-size:13px}
+.upload-done { padding: 12px 14px; background: var(--green-l); border: 1px solid var(--green-b); border-radius: var(--r); font-size: 13px; color: var(--green); margin-top: 10px; display: none; }
+.upload-done.show { display: block; }
 
-/* ── PARSED PREVIEW ── */
-.parsed-term{margin-bottom:12px;padding:12px 14px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)}
-.parsed-term-name{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.4px}
-.parsed-mod{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:13px}
-.parsed-mod-name{flex:1;color:var(--text)}
-.parsed-mod-cu{color:var(--text3);font-family:var(--mono);font-size:11px;min-width:30px}
+/* Goal cards */
+.goal-list { display: grid; gap: 8px; margin-bottom: 22px; }
+.goal-card { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: var(--r); cursor: pointer; transition: all .15s; background: var(--bg2); }
+.goal-card:hover { border-color: var(--border2); }
+.goal-card.sel { border-color: var(--accent); background: var(--accent-l); }
+.goal-left .gl-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.goal-card.sel .gl-name { color: var(--accent); }
+.goal-left .gl-sub { font-size: 12px; color: var(--text2); }
 
-/* ── PROFILE CARD ── */
-.profile-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
-.avatar{width:44px;height:44px;border-radius:50%;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--accent);flex-shrink:0}
-.profile-name{font-size:16px;font-weight:600}
-.profile-meta{font-size:12px;color:var(--text2)}
+/* ══ GRADES PAGE ══ */
+.info-tip { background: var(--accent-l); border: 1px solid var(--accent-b); border-radius: var(--r); padding: 10px 14px; font-size: 12px; color: var(--text2); margin-bottom: 16px; line-height: 1.7; }
+.info-tip strong { color: var(--accent); }
 
-/* ── GRADES TAB ── */
-.term-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
-.term-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
-.term-name-txt{font-size:13px;font-weight:600}
-.term-gpa-txt{font-size:12px;color:var(--text2)}
-.mod-table{width:100%;border-collapse:collapse}
-.mod-table td{padding:8px 18px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
-.mod-table tr:last-child td{border:none}
-.mod-main{color:var(--text)}
-.mod-code-sm{font-size:11px;color:var(--text3);font-family:var(--mono);display:block}
-.mod-cu-td{text-align:center;width:44px;font-family:var(--mono);font-size:12px;color:var(--text2)}
-.mod-grade-td{text-align:center;width:56px}
-.mod-del-td{width:32px;text-align:center}
-.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;padding:2px 5px;border-radius:4px;transition:all .1s}
-.del-btn:hover{background:var(--red-l);color:var(--red)}
+.term-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); box-shadow: var(--sh); margin-bottom: 12px; overflow: hidden; }
+.term-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: var(--bg3); border-bottom: 1px solid var(--border); }
+.term-name { font-size: 14px; font-weight: 600; }
+.term-meta { font-size: 12px; color: var(--text2); margin-top: 1px; }
+.term-actions { display: flex; align-items: center; gap: 8px; }
 
-.add-mod-bar{padding:10px 18px;background:var(--bg3);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 60px 80px auto;gap:8px;align-items:center}
-.add-mod-bar input,.add-mod-bar select{background:var(--bg2);font-size:12px;padding:7px 10px}
-.p-hint{font-size:11px;color:var(--text3);padding:4px 18px 10px;background:var(--bg3)}
+.mod-list { padding: 0; }
+.mod-row { display: grid; grid-template-columns: 1fr 48px 60px 32px; align-items: center; gap: 0; padding: 9px 18px; border-bottom: 1px solid var(--border); transition: background .1s; }
+.mod-row:last-child { border: none; }
+.mod-row:hover { background: var(--bg3); }
+.mod-name { font-size: 13px; color: var(--text); }
+.mod-code-sm { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+.mod-cu { font-size: 12px; font-family: var(--mono); color: var(--text2); text-align: center; }
+.mod-grade { text-align: center; }
+.mod-del { display: flex; align-items: center; justify-content: center; }
+.del-btn { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 14px; width: 24px; height: 24px; border-radius: 5px; transition: all .1s; display: flex; align-items: center; justify-content: center; }
+.del-btn:hover { background: var(--red-l); color: var(--red); }
 
-.add-term-btn{width:100%;padding:14px;border:2px dashed var(--border2);border-radius:var(--r);background:none;cursor:pointer;color:var(--text2);font-family:var(--font);font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
-.add-term-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
+.mod-empty { padding: 16px 18px; text-align: center; font-size: 12px; color: var(--text3); }
 
-/* ── OVERVIEW ── */
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
-.stat{background:var(--bg3);border-radius:var(--r);padding:14px 16px}
-.stat-lbl{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.stat-val{font-size:24px;font-weight:700;font-family:var(--mono);margin-bottom:2px}
-.stat-sub{font-size:11px;color:var(--text2)}
+/* ── MODULE SEARCH ── */
+.add-mod-wrap { padding: 12px 18px; background: var(--bg3); border-top: 1px solid var(--border); }
+.add-mod-grid { display: grid; grid-template-columns: 1fr 60px 84px auto; gap: 8px; align-items: end; }
+.add-mod-grid input, .add-mod-grid select { background: var(--bg2); font-size: 12px; padding: 7px 10px; }
+.search-wrap { position: relative; }
+.search-input { padding-left: 28px !important; }
+.search-icon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; }
+.search-icon svg { width: 13px; height: 13px; }
+.dropdown { position: absolute; left: 0; right: 0; top: calc(100% + 4px); background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--sh2); z-index: 300; max-height: 240px; overflow-y: auto; display: none; }
+.dropdown.open { display: block; }
+.dd-item { padding: 9px 12px; cursor: pointer; transition: background .1s; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.dd-item:last-child { border: none; }
+.dd-item:hover, .dd-item.focused { background: var(--accent-l); }
+.dd-name { font-size: 13px; color: var(--text); }
+.dd-code { font-size: 11px; font-family: var(--mono); color: var(--text3); }
+.dd-pillar { font-size: 10px; font-family: var(--mono); padding: 2px 6px; border-radius: 4px; background: var(--bg3); color: var(--text3); }
+.dd-empty { padding: 14px 12px; text-align: center; font-size: 12px; color: var(--text3); }
+.p-hint { font-size: 11px; color: var(--text3); margin-top: 6px; }
 
-.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.trend-row:last-child{margin:0}
-.trend-lbl{font-size:12px;font-family:var(--mono);color:var(--text2);min-width:88px}
-.trend-track{flex:1;height:8px;background:var(--bg4);border-radius:99px;overflow:hidden}
-.trend-fill{height:100%;border-radius:99px;transition:width .5s ease}
-.trend-val{font-size:12px;font-weight:600;font-family:var(--mono);min-width:30px;text-align:right}
+.add-term-dashed { width: 100%; padding: 14px; border: 2px dashed var(--border2); border-radius: var(--r); background: none; cursor: pointer; color: var(--text2); font-family: var(--font); font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all .15s; }
+.add-term-dashed:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-l); }
 
-.hon-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);font-size:13px}
-.hon-row:last-child{border:none}
-.hon-row.cur{background:var(--accent-l);border-radius:8px;margin:2px 0;border-color:transparent}
-.hon-row.cur *{color:var(--accent)!important}
+.grades-footer { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); padding: 18px 22px; margin-top: 14px; box-shadow: var(--sh); display: none; }
+.grades-footer.show { display: block; }
+.gf-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 
-/* ── PLANNER ── */
-.target-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-.tc{padding:12px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;text-align:center;background:var(--bg2)}
-.tc:hover{border-color:var(--border2);background:var(--bg3)}
-.tc.sel{border-color:var(--accent);background:var(--accent-l)}
-.tc-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
-.tc.sel .tc-name{color:var(--accent)}
-.tc-range{font-size:11px;color:var(--text3);font-family:var(--mono)}
-.tc.sel .tc-range{color:var(--accent);opacity:.7}
+/* ══ OVERVIEW ══ */
+.stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+.stat { background: var(--bg3); border-radius: var(--r); padding: 14px 16px; }
+.stat-lbl { font-size: 11px; font-family: var(--mono); color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+.stat-val { font-size: 26px; font-weight: 700; font-family: var(--mono); line-height: 1; margin-bottom: 4px; }
+.stat-sub { font-size: 11px; color: var(--text2); }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-.rbox{border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
-.rbox.ok{background:var(--green-l);border:1px solid var(--green-b)}
-.rbox.warn{background:var(--amber-l);border:1px solid var(--amber-b)}
-.rbox.bad{background:var(--red-l);border:1px solid var(--red-b)}
-.rbox.info{background:var(--accent-l);border:1px solid var(--accent-b)}
-.rbox-eye{font-size:11px;font-family:var(--mono);margin-bottom:3px}
-.rbox.ok .rbox-eye{color:var(--green)}.rbox.warn .rbox-eye{color:var(--amber)}.rbox.bad .rbox-eye{color:var(--red)}.rbox.info .rbox-eye{color:var(--accent)}
-.rbox-main{font-size:19px;font-weight:600;font-family:var(--mono)}
-.rbox.ok .rbox-main{color:var(--green)}.rbox.warn .rbox-main{color:var(--amber)}.rbox.bad .rbox-main{color:var(--red)}.rbox.info .rbox-main{color:var(--accent)}
-.rbox-detail{font-size:12px;color:var(--text2);margin-top:4px}
+.profile-row { display: flex; align-items: center; gap: 14px; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--accent-l); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: var(--accent); flex-shrink: 0; }
+.profile-name { font-size: 15px; font-weight: 600; }
+.profile-meta { font-size: 12px; color: var(--text2); }
 
-.wi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.wi-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
-.wi-g{font-size:12px;font-weight:600;font-family:var(--mono);margin-bottom:2px}
-.wi-cgpa{font-size:15px;font-weight:700;font-family:var(--mono)}
-.wi-note{font-size:11px;font-family:var(--mono);margin-top:3px}
+.trend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.trend-item:last-child { margin: 0; }
+.trend-lbl { font-size: 11px; font-family: var(--mono); color: var(--text2); min-width: 84px; }
+.trend-track { flex: 1; height: 7px; background: var(--bg4); border-radius: 99px; overflow: hidden; }
+.trend-fill { height: 100%; border-radius: 99px; transition: width .5s ease; }
+.trend-val { font-size: 12px; font-weight: 600; font-family: var(--mono); min-width: 30px; text-align: right; }
 
-/* ── CONVERTER ── */
-.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.slider-row label{font-size:13px;color:var(--text2);min-width:70px;white-space:nowrap}
-.slider-row input[type=range]{flex:1;accent-color:var(--accent)}
-.slider-row input[type=number]{width:70px}
-.score-result{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px;display:flex;align-items:center;gap:18px}
-.score-grade{font-size:52px;font-weight:700;font-family:var(--mono);line-height:1}
-.score-detail .sd-pts{font-size:17px;font-weight:600;font-family:var(--mono);margin-bottom:3px}
-.score-detail .sd-desc{font-size:13px;color:var(--text2)}
-.score-detail .sd-hon{font-size:12px;color:var(--text3);margin-top:6px}
+.hon-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 8px; margin-bottom: 4px; transition: background .15s; }
+.hon-item.cur { background: var(--accent-l); border: 1px solid var(--accent-b); }
+.hon-name { font-size: 13px; font-weight: 500; }
+.hon-item.cur .hon-name { color: var(--accent); }
+.hon-range { font-size: 11px; font-family: var(--mono); color: var(--text3); }
+
+/* ══ PLANNER ══ */
+.tc-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+.tc { padding: 12px 10px; border: 1.5px solid var(--border); border-radius: var(--r); cursor: pointer; transition: all .15s; text-align: center; background: var(--bg2); }
+.tc:hover { border-color: var(--border2); background: var(--bg3); }
+.tc.sel { border-color: var(--accent); background: var(--accent-l); }
+.tc-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.tc.sel .tc-name { color: var(--accent); }
+.tc-range { font-size: 10px; color: var(--text3); font-family: var(--mono); }
+.tc.sel .tc-range { color: var(--accent); opacity: .7; }
+
+.rbox { border-radius: var(--r); padding: 16px 18px; margin-bottom: 14px; }
+.rbox.ok { background: var(--green-l); border: 1px solid var(--green-b); }
+.rbox.warn { background: var(--amber-l); border: 1px solid var(--amber-b); }
+.rbox.bad { background: var(--red-l); border: 1px solid var(--red-b); }
+.rbox.info { background: var(--accent-l); border: 1px solid var(--accent-b); }
+.rbox-eye { font-size: 11px; font-family: var(--mono); margin-bottom: 3px; }
+.rbox.ok .rbox-eye { color: var(--green); }
+.rbox.warn .rbox-eye { color: var(--amber); }
+.rbox.bad .rbox-eye { color: var(--red); }
+.rbox.info .rbox-eye { color: var(--accent); }
+.rbox-main { font-size: 18px; font-weight: 600; font-family: var(--mono); }
+.rbox.ok .rbox-main { color: var(--green); }
+.rbox.warn .rbox-main { color: var(--amber); }
+.rbox.bad .rbox-main { color: var(--red); }
+.rbox.info .rbox-main { color: var(--accent); }
+.rbox-detail { font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.6; }
+
+.wi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.wi { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 14px; }
+.wi-g { font-size: 12px; font-weight: 600; font-family: var(--mono); margin-bottom: 2px; }
+.wi-cgpa { font-size: 16px; font-weight: 700; font-family: var(--mono); }
+.wi-note { font-size: 11px; font-family: var(--mono); margin-top: 3px; }
+.wi-hon { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+
+/* ══ CONVERTER ══ */
+.score-slider-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.score-slider-wrap label { font-size: 13px; color: var(--text2); white-space: nowrap; min-width: 60px; }
+.score-slider-wrap input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
+.score-slider-wrap input[type=number] { width: 72px; }
+.sc-result { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--rl); padding: 22px; display: flex; align-items: center; gap: 20px; }
+.sc-grade { font-size: 54px; font-weight: 700; font-family: var(--mono); line-height: 1; }
+.sc-pts { font-size: 17px; font-weight: 600; font-family: var(--mono); margin-bottom: 3px; }
+.sc-desc { font-size: 13px; color: var(--text2); }
+.sc-hon { font-size: 12px; color: var(--text3); margin-top: 6px; }
 
 /* ── MODAL ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center}
-.overlay.open{display:flex}
-.modal{background:var(--bg2);border-radius:var(--rl);padding:24px;width:400px;max-width:92vw;box-shadow:var(--sh2)}
-.modal-title{font-size:16px;font-weight:600;margin-bottom:4px}
-.modal-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.overlay { display: none; position: fixed; inset: 0; background: rgba(16,18,24,.4); z-index: 400; align-items: center; justify-content: center; padding: 20px; }
+.overlay.open { display: flex; }
+.modal { background: var(--bg2); border-radius: var(--rxl); padding: 28px; width: 420px; max-width: 100%; box-shadow: var(--sh2); animation: fadeUp .2s ease; }
+.modal-title { font-size: 17px; font-weight: 600; letter-spacing: -.2px; margin-bottom: 4px; }
+.modal-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
 
 /* ── EMPTY ── */
-.empty{text-align:center;padding:48px 20px;color:var(--text2)}
-.empty-icon{font-size:36px;display:block;margin-bottom:12px}
-.empty-title{font-size:16px;font-weight:500;color:var(--text);margin-bottom:6px}
-.empty-sub{font-size:13px;line-height:1.7;margin-bottom:20px}
+.empty { text-align: center; padding: 44px 20px; }
+.empty-icon { font-size: 38px; display: block; margin-bottom: 12px; }
+.empty-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.empty-sub { font-size: 13px; color: var(--text2); line-height: 1.75; margin-bottom: 22px; }
 
 /* ── RESPONSIVE ── */
-@media(max-width:600px){
-  .content{padding:16px}
-  .stat-row{grid-template-columns:1fr 1fr}
-  .target-cards{grid-template-columns:repeat(2,1fr)}
-  .wi-grid{grid-template-columns:1fr 1fr}
-  .add-mod-bar{grid-template-columns:1fr 1fr}
-  .onboard-wrap{padding:24px 16px}
-  .option-grid{grid-template-columns:1fr}
-  .topbar{padding:0 16px}
-  .tabs{padding:0 12px}
+@media (max-width: 640px) {
+  .content { padding: 16px; }
+  .ob-wrap { padding: 32px 16px; }
+  .stat-row { grid-template-columns: 1fr 1fr; }
+  .tc-row { grid-template-columns: repeat(2,1fr); }
+  .wi-grid { grid-template-columns: 1fr 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .opt-grid { grid-template-columns: 1fr; }
+  .add-mod-grid { grid-template-columns: 1fr 1fr; }
+  .topbar { padding: 0 16px; }
+  .tab-bar { padding: 0 12px; }
 }
-
-.hidden{display:none!important}
-.info-bar{background:var(--accent-l);border:1px solid var(--accent-b);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
-.info-bar strong{color:var(--accent)}
+.hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -259,21 +304,21 @@ textarea{resize:vertical;min-height:80px}
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="logo">
-    <div class="logo-icon"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="white"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="white" opacity=".5"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="white" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="white" opacity=".2"/></svg></div>
+    <div class="logo-icon"><svg viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1.5" fill="white"/><rect x="8.5" y="1.5" width="5" height="5" rx="1.5" fill="white" opacity=".5"/><rect x="1.5" y="8.5" width="5" height="5" rx="1.5" fill="white" opacity=".5"/><rect x="8.5" y="8.5" width="5" height="5" rx="1.5" fill="white" opacity=".2"/></svg></div>
     <span class="logo-name">SUTD Grade Tracker</span>
   </div>
   <div class="topbar-right">
-    <div class="cgpa-pill hidden" id="top-pill">
+    <div class="cgpa-pill" id="cgpa-pill">
       <span class="lbl">CGPA</span>
-      <span class="num" id="top-cgpa">—</span>
-      <span id="top-hon" class="badge"></span>
+      <span class="num" id="pill-cgpa">—</span>
+      <span class="badge" id="pill-hon"></span>
     </div>
-    <button class="reset-btn hidden" id="reset-btn" onclick="resetApp()">Start over</button>
+    <button class="topbar-btn" id="reset-btn" onclick="resetApp()">Start over</button>
   </div>
 </div>
 
-<!-- TABS — hidden until onboarding done -->
-<div class="tabs hidden" id="main-tabs">
+<!-- TABS -->
+<div class="tab-bar" id="tab-bar">
   <button class="tab active" onclick="showTab('grades',this)">
     <svg viewBox="0 0 14 14" fill="none"><path d="M1 3h12M1 7h12M1 11h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>My Grades
   </button>
@@ -289,36 +334,28 @@ textarea{resize:vertical;min-height:80px}
 </div>
 
 <!-- ══════════════ ONBOARDING ══════════════ -->
-<div id="onboard-container">
-  <div class="onboard-wrap">
-
-    <!-- Step indicators -->
-    <div class="step-indicator" id="step-indicator">
-      <div class="step-dot active" id="dot-0"></div>
-      <div class="step-line" id="line-0"></div>
-      <div class="step-dot" id="dot-1"></div>
-      <div class="step-line" id="line-1"></div>
-      <div class="step-dot" id="dot-2"></div>
-      <div class="step-line" id="line-2"></div>
-      <div class="step-dot" id="dot-3"></div>
+<div id="ob">
+  <div class="ob-wrap">
+    <div class="progress">
+      <div class="p-dot cur" id="d0"></div><div class="p-line" id="l0"></div>
+      <div class="p-dot" id="d1"></div><div class="p-line" id="l1"></div>
+      <div class="p-dot" id="d2"></div><div class="p-line" id="l2"></div>
+      <div class="p-dot" id="d3"></div>
     </div>
 
-    <!-- STEP 0 — Welcome -->
-    <div class="onboard-step active" id="step-0">
-      <div class="onboard-title">Welcome to SUTD Grade Tracker 👋</div>
-      <div class="onboard-sub">Track your CGPA, plan your honours class, and see what grades you need — built for SUTD students by a SUTD student.<br><br>Let's set up your profile in a few quick steps.</div>
-      <button class="btn btn-primary btn-full" style="padding:12px" onclick="goStep(1)">
-        Get started
-        <svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+    <!-- Step 0 -->
+    <div class="ob-step active" id="s0">
+      <div class="ob-title">SUTD Grade Tracker 🎓</div>
+      <div class="ob-sub">Track your CGPA, plan your honours class, and find out exactly what grades you need to graduate where you want. Built for SUTD students.<br><br>Takes 2 minutes to set up. Your data stays in your browser — nothing is uploaded.</div>
+      <button class="btn btn-p btn-full" style="padding:13px" onclick="goStep(1)">Get started <svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </div>
 
-    <!-- STEP 1 — Basic info -->
-    <div class="onboard-step" id="step-1">
-      <div class="onboard-title">Tell us about yourself</div>
-      <div class="onboard-sub">This helps personalise your planner. Nothing is sent anywhere — everything stays in your browser.</div>
-      <div class="field"><label>Your name</label><input type="text" id="q-name" placeholder="e.g. Alex Tan"></div>
-      <div class="field"><label>Your SUTD programme / pillar</label>
+    <!-- Step 1 -->
+    <div class="ob-step" id="s1">
+      <div class="ob-title">About you</div>
+      <div class="ob-sub">This helps personalise your planner. All stored locally in your browser.</div>
+      <div class="field"><label>Your name</label><input id="q-name" type="text" placeholder="e.g. Alex Tan" autocomplete="off"></div>
+      <div class="field"><label>Programme / Pillar</label>
         <select id="q-prog">
           <option value="">Select your programme</option>
           <option>Computer Science and Design (CSD)</option>
@@ -326,152 +363,110 @@ textarea{resize:vertical;min-height:80px}
           <option>Engineering Product Development (EPD)</option>
           <option>Architecture and Sustainable Design (ASD)</option>
           <option>Design and Artificial Intelligence (DAI)</option>
-          <option>Other / Not sure</option>
+          <option>Other</option>
         </select>
       </div>
-      <div class="field"><label>Which year did you start? (intake year)</label>
-        <select id="q-year">
-          <option value="">Select year</option>
-          <option>2020</option><option>2021</option><option>2022</option>
-          <option>2023</option><option>2024</option><option>2025</option>
-        </select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field" style="margin:0"><label>Intake year</label>
+          <select id="q-year">
+            <option value="">Select</option>
+            <option>2020</option><option>2021</option><option>2022</option>
+            <option>2023</option><option>2024</option><option>2025</option>
+          </select>
+        </div>
+        <div class="field" style="margin:0"><label>Total degree CUs</label>
+          <select id="q-tcu">
+            <option value="228">228 CUs</option>
+            <option value="240" selected>240 CUs</option>
+            <option value="252">252 CUs</option>
+          </select>
+        </div>
       </div>
-      <div class="field"><label>Estimated total CUs in your degree</label>
-        <select id="q-totalcu">
-          <option value="228">~228 CUs (standard)</option>
-          <option value="240" selected>~240 CUs (standard with minor)</option>
-          <option value="252">~252 CUs (double minor)</option>
-          <option value="300">~300+ CUs (double degree)</option>
-        </select>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:4px">
-        <button class="btn btn-ghost" onclick="goStep(0)">Back</button>
-        <button class="btn btn-primary" style="flex:1" onclick="validateStep1()">Continue →</button>
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <button class="btn btn-s" onclick="goStep(0)">Back</button>
+        <button class="btn btn-p" style="flex:1" onclick="s1next()">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 2 — How to enter grades -->
-    <div class="onboard-step" id="step-2">
-      <div class="onboard-title">How would you like to enter your grades?</div>
-      <div class="onboard-sub">You can upload your official transcript PDF and we'll try to read it, or enter everything manually term by term.</div>
-      <div class="option-grid">
-        <div class="option-card" id="opt-upload" onclick="selectMethod('upload')">
-          <span class="oc-icon">📄</span>
-          <div class="oc-title">Upload transcript PDF</div>
-          <div class="oc-sub">Upload your official SUTD transcript and we'll extract your terms and grades automatically</div>
+    <!-- Step 2 -->
+    <div class="ob-step" id="s2">
+      <div class="ob-title">How to enter grades</div>
+      <div class="ob-sub">Upload your transcript PDF for guidance, or skip straight to entering your grades manually.</div>
+      <div class="opt-grid">
+        <div class="opt" id="opt-up" onclick="selMethod('up')">
+          <span class="opt-icon">📄</span>
+          <div class="opt-title">Upload transcript</div>
+          <div class="opt-sub">Upload your SUTD transcript PDF — we'll show you a guide to enter your grades quickly</div>
         </div>
-        <div class="option-card" id="opt-manual" onclick="selectMethod('manual')">
-          <span class="oc-icon">✏️</span>
-          <div class="oc-title">Enter manually</div>
-          <div class="oc-sub">Add your terms and modules one by one. Good if you don't have your transcript handy</div>
+        <div class="opt" id="opt-man" onclick="selMethod('man')">
+          <span class="opt-icon">✏️</span>
+          <div class="opt-title">Enter manually</div>
+          <div class="opt-sub">Add terms and modules yourself. Search by module code or name — they auto-fill.</div>
         </div>
       </div>
-      <div id="upload-section" class="hidden">
-        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondrop="handleDrop(event)">
+      <div id="upload-area" class="hidden">
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="ev.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="dropFile(event)">
           <span class="uz-icon">📎</span>
           <div class="uz-title">Click to upload or drag & drop</div>
-          <div class="uz-sub">PDF files only · Your file is read locally, never uploaded anywhere</div>
+          <div class="uz-sub">PDF only · Read locally, never sent anywhere</div>
         </div>
-        <input type="file" id="file-input" accept=".pdf" onchange="handleFileSelect(event)">
-        <div id="upload-result" class="hidden"></div>
-        <div id="parsed-preview" class="hidden" style="margin-top:16px"></div>
+        <input type="file" id="file-input" accept=".pdf" onchange="handleFile(event)">
+        <div class="upload-done" id="upload-done">✅ File received! On the next screen, add your terms and enter grades as shown on your transcript.</div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:16px">
-        <button class="btn btn-ghost" onclick="goStep(1)">Back</button>
-        <button class="btn btn-primary" style="flex:1" id="step2-next" onclick="goStep(3)">Continue →</button>
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <button class="btn btn-s" onclick="goStep(1)">Back</button>
+        <button class="btn btn-p" style="flex:1" onclick="goStep(3)">Continue →</button>
       </div>
     </div>
 
-    <!-- STEP 3 — Goals -->
-    <div class="onboard-step" id="step-3">
-      <div class="onboard-title">What's your target honours class?</div>
-      <div class="onboard-sub">This sets your planner default. You can always change it later.</div>
-      <div style="display:grid;gap:10px;margin-bottom:20px">
-        <div class="option-card" id="goal-4" onclick="selectGoal(this,4.50,'Highest Distinction')">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div><div class="oc-title">Highest Distinction</div><div class="oc-sub">CGPA 4.50 and above</div></div>
-            <span class="badge badge-green">4.50+</span>
-          </div>
-        </div>
-        <div class="option-card" id="goal-3" onclick="selectGoal(this,4.00,'Distinction')">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div><div class="oc-title">Distinction</div><div class="oc-sub">CGPA 4.00 – 4.49</div></div>
-            <span class="badge badge-blue">4.00+</span>
-          </div>
-        </div>
-        <div class="option-card selected" id="goal-2" onclick="selectGoal(this,3.50,'Merit')">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div><div class="oc-title">Merit</div><div class="oc-sub">CGPA 3.50 – 3.99</div></div>
-            <span class="badge badge-amber">3.50+</span>
-          </div>
-        </div>
-        <div class="option-card" id="goal-1" onclick="selectGoal(this,3.00,'Honours')">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div><div class="oc-title">Honours</div><div class="oc-sub">CGPA 3.00 – 3.49</div></div>
-            <span class="badge badge-grey">3.00+</span>
-          </div>
-        </div>
+    <!-- Step 3 -->
+    <div class="ob-step" id="s3">
+      <div class="ob-title">What's your target?</div>
+      <div class="ob-sub">Set your default honours target. You can change this anytime in the planner.</div>
+      <div class="goal-list">
+        <div class="goal-card" id="g4" onclick="selGoal(this,4.50,'Highest Distinction')"><div class="goal-left"><div class="gl-name">Highest Distinction</div><div class="gl-sub">CGPA 4.50 and above</div></div><span class="badge bb">4.50+</span></div>
+        <div class="goal-card" id="g3" onclick="selGoal(this,4.00,'Distinction')"><div class="goal-left"><div class="gl-name">Distinction</div><div class="gl-sub">CGPA 4.00 – 4.49</div></div><span class="badge bb">4.00+</span></div>
+        <div class="goal-card sel" id="g2" onclick="selGoal(this,3.50,'Merit')"><div class="goal-left"><div class="gl-name">Merit</div><div class="gl-sub">CGPA 3.50 – 3.99</div></div><span class="badge ba">3.50+</span></div>
+        <div class="goal-card" id="g1" onclick="selGoal(this,3.00,'Honours')"><div class="goal-left"><div class="gl-name">Honours</div><div class="gl-sub">CGPA 3.00 – 3.49</div></div><span class="badge bgr">3.00+</span></div>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn btn-ghost" onclick="goStep(2)">Back</button>
-        <button class="btn btn-primary" style="flex:1" onclick="finishOnboarding()">Finish setup →</button>
+        <button class="btn btn-s" onclick="goStep(2)">Back</button>
+        <button class="btn btn-p" style="flex:1" onclick="finish()">Finish setup →</button>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════════ MAIN APP ══════════════ -->
-<div id="app-container" class="hidden">
+<!-- ══════════════ APP ══════════════ -->
+<div id="app" class="hidden">
 
   <!-- GRADES -->
   <div class="page active content" id="tab-grades">
-    <div class="info-bar">
-      <strong>Tip:</strong> Use grade <strong>P</strong> for pass/fail modules (Design Thinking projects, etc.) — they won't count toward your CGPA. All other letter grades count.
+    <div class="info-tip">
+      <strong>Module search:</strong> Type a module code or name in the search box below each term — modules auto-fill from SUTD's catalogue. Use grade <strong>P</strong> for pass/fail modules (they don't affect CGPA).
     </div>
     <div id="terms-list"></div>
-    <button class="add-term-btn" onclick="openTermModal()">
+    <button class="add-term-dashed" onclick="openTermModal()">
       <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       Add a new term
     </button>
-    <div id="grades-footer" class="hidden" style="margin-top:16px">
-      <div class="card" style="margin-bottom:0">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-          <div>
-            <div style="font-size:12px;color:var(--text2);margin-bottom:2px">Cumulative GPA</div>
-            <div style="font-size:28px;font-weight:700;font-family:var(--mono)" id="footer-cgpa">—</div>
-          </div>
-          <div id="footer-hon"></div>
-          <div style="font-size:12px;color:var(--text2)" id="footer-cu"></div>
-        </div>
+    <div class="grades-footer" id="grades-footer">
+      <div class="gf-inner">
+        <div><div style="font-size:12px;color:var(--text2);margin-bottom:2px">Cumulative GPA</div><div style="font-size:28px;font-weight:700;font-family:var(--mono)" id="gf-cgpa">—</div></div>
+        <div id="gf-hon"></div>
+        <div style="font-size:12px;color:var(--text2)" id="gf-cu"></div>
       </div>
     </div>
   </div>
 
   <!-- OVERVIEW -->
   <div class="page content" id="tab-overview">
-    <div id="ov-empty" class="empty">
-      <span class="empty-icon">📊</span>
-      <div class="empty-title">Nothing to show yet</div>
-      <div class="empty-sub">Add some grades in My Grades first</div>
-      <button class="btn btn-primary" onclick="showTab('grades',document.querySelector('.tab'))">Go to My Grades</button>
-    </div>
+    <div id="ov-empty" class="empty"><span class="empty-icon">📊</span><div class="empty-title">Nothing here yet</div><div class="empty-sub">Add your grades first to see your overview</div><button class="btn btn-p" onclick="showTab('grades',document.querySelector('.tab'))">Add grades</button></div>
     <div id="ov-content" class="hidden">
-      <div class="card">
-        <div class="profile-header" id="ov-profile"></div>
-        <div class="stat-row" id="ov-stats"></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title">Term trend</div>
-          <div class="card-sub">Your GPA each term</div>
-          <div id="ov-trend"></div>
-        </div>
-        <div class="card" style="margin-bottom:0">
-          <div class="card-title">Honours scale</div>
-          <div class="card-sub">Where you stand</div>
-          <div id="ov-hon"></div>
-        </div>
+      <div class="card"><div class="profile-row" id="ov-profile"></div><div class="stat-row" id="ov-stats"></div></div>
+      <div class="two-col">
+        <div class="card" style="margin-bottom:0"><div class="card-title">Term trend</div><div class="card-sub" style="margin-bottom:14px">GPA each term</div><div id="ov-trend"></div></div>
+        <div class="card" style="margin-bottom:0"><div class="card-title">Honours scale</div><div class="card-sub" style="margin-bottom:14px">Where you stand now</div><div id="ov-hon"></div></div>
       </div>
     </div>
   </div>
@@ -479,29 +474,29 @@ textarea{resize:vertical;min-height:80px}
   <!-- PLANNER -->
   <div class="page content" id="tab-planner">
     <div class="card">
-      <div class="card-title">Total degree CUs</div>
-      <div class="card-sub">Adjust if your programme differs</div>
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <input type="number" id="plan-total-cu" value="240" min="100" max="400" step="6" style="width:90px" oninput="calcPlanner()">
-        <span style="font-size:13px;color:var(--text2)">Graded CUs completed: <strong id="plan-done" style="color:var(--text)">0</strong></span>
-        <span style="font-size:13px;color:var(--text2)">Remaining: <strong id="plan-rem" style="color:var(--text)">—</strong></span>
+      <div class="card-title">Degree settings</div>
+      <div class="card-sub">Adjust to match your programme</div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--text2)">
+        <label style="display:flex;align-items:center;gap:6px">Total CUs: <input type="number" id="p-total" value="240" min="100" max="400" step="6" oninput="calcPlanner()" style="width:80px"></label>
+        <span>Graded CUs done: <strong id="p-done" style="color:var(--text)">0</strong></span>
+        <span>Remaining: <strong id="p-rem" style="color:var(--text)">—</strong></span>
       </div>
     </div>
     <div class="card">
       <div class="card-title">Target honours class</div>
       <div class="card-sub">Select what you're aiming for</div>
-      <div class="target-cards" id="target-cards">
+      <div class="tc-row">
         <div class="tc" onclick="selTarget(this,3.00,'Honours')"><div class="tc-name">Honours</div><div class="tc-range">≥ 3.00</div></div>
         <div class="tc sel" onclick="selTarget(this,3.50,'Merit')"><div class="tc-name">Merit</div><div class="tc-range">≥ 3.50</div></div>
         <div class="tc" onclick="selTarget(this,4.00,'Distinction')"><div class="tc-name">Distinction</div><div class="tc-range">≥ 4.00</div></div>
-        <div class="tc" onclick="selTarget(this,4.50,'Highest Distinction')"><div class="tc-name">Highest Distinction</div><div class="tc-range">≥ 4.50</div></div>
+        <div class="tc" onclick="selTarget(this,4.50,'Highest Distinction')"><div class="tc-name">Highest Dist.</div><div class="tc-range">≥ 4.50</div></div>
       </div>
-      <div id="plan-result"></div>
+      <div id="p-result"></div>
     </div>
     <div class="card">
-      <div class="card-title">What if I average this grade from now?</div>
-      <div class="card-sub">See your projected final CGPA for each scenario</div>
-      <div class="wi-grid" id="plan-whatif"></div>
+      <div class="card-title">What if I average this grade from here?</div>
+      <div class="card-sub">Projected final CGPA for each scenario</div>
+      <div class="wi-grid" id="p-whatif"></div>
     </div>
   </div>
 
@@ -509,43 +504,149 @@ textarea{resize:vertical;min-height:80px}
   <div class="page content" id="tab-converter">
     <div class="card" style="max-width:480px">
       <div class="card-title">Raw score to SUTD grade</div>
-      <div class="card-sub">Drag the slider or type your percentage score</div>
-      <div class="slider-row">
+      <div class="card-sub">Slide or type your percentage score</div>
+      <div class="score-slider-wrap">
         <label>Score %</label>
-        <input type="range" min="0" max="100" step="1" value="75" id="sc-slider" oninput="syncScore('slider',this.value)">
-        <input type="number" min="0" max="100" value="75" id="sc-num" oninput="syncScore('num',this.value)" style="width:70px">
+        <input type="range" min="0" max="100" step="1" value="75" id="sl" oninput="syncSc('sl',this.value)">
+        <input type="number" min="0" max="100" value="75" id="sn" oninput="syncSc('sn',this.value)" style="width:70px">
       </div>
-      <div class="score-result" id="sc-result"></div>
+      <div class="sc-result" id="sc-result"></div>
     </div>
     <div class="card" style="max-width:480px;margin-top:0">
-      <div class="card-title">Full grading scale</div>
-      <div class="card-sub">SUTD 5-point system (2017 intake onwards)</div>
-      <table style="width:100%;border-collapse:collapse" id="sc-table"></table>
+      <div class="card-title">Full SUTD grading scale</div>
+      <div class="card-sub">5-point system · 2017 intake onwards</div>
+      <table id="sc-table" style="width:100%;border-collapse:collapse"></table>
     </div>
   </div>
-
 </div>
 
 <!-- TERM MODAL -->
 <div class="overlay" id="term-modal">
   <div class="modal">
     <div class="modal-title">Add a term</div>
-    <div class="modal-sub">Enter the term name, e.g. "2025 Jan–Apr" or "Term 5"</div>
-    <div class="field"><label>Term name</label><input type="text" id="new-term-name" placeholder="e.g. 2025 Sep–Dec" maxlength="40"></div>
+    <div class="modal-sub">Give the term a name — e.g. "2025 Jan–Apr" or "Term 5"</div>
+    <div class="field"><label>Term name</label><input id="new-term" type="text" placeholder="e.g. 2026 Jan–Apr" maxlength="40"></div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="confirmAddTerm()">Add term</button>
+      <button class="btn btn-s" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-p" onclick="confirmTerm()">Add term</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ════════════════ DATA & CONSTANTS ════════════════ */
+/* ══════════════════════════════════════
+   MODULE DATABASE — 200+ SUTD modules
+══════════════════════════════════════ */
+const MODULES = [
+  // Freshmore / SMT
+  {code:'01.018',name:'Design Thinking Project I',cu:12,pillar:'SMT',pf:true},
+  {code:'01.019',name:'Design Thinking Project II',cu:12,pillar:'SMT',pf:true},
+  {code:'01.020',name:'Design Thinking Project III',cu:12,pillar:'SMT',pf:true},
+  {code:'02.003',name:'Social Science: Understanding Behaviour, Culture & Society',cu:12,pillar:'HASS'},
+  {code:'10.013',name:'Modelling and Analysis',cu:12,pillar:'SMT'},
+  {code:'10.014',name:'Computational Thinking For Design',cu:12,pillar:'SMT'},
+  {code:'10.015',name:'Physical World',cu:12,pillar:'SMT'},
+  {code:'10.016',name:'Science for a Sustainable World',cu:12,pillar:'SMT',pf:true},
+  {code:'10.017',name:'Technological World',cu:12,pillar:'SMT'},
+  {code:'10.018',name:'Modeling Space and Systems',cu:12,pillar:'SMT'},
+  {code:'10.020',name:'Data Driven World',cu:12,pillar:'SMT'},
+  {code:'10.022',name:'Modelling Uncertainty',cu:12,pillar:'SMT'},
+  {code:'10.023',name:'Designing Energy Systems',cu:12,pillar:'SMT'},
+  // HASS
+  {code:'02.001',name:'Global Humanities: Literature, Philosophy, and Ethics',cu:12,pillar:'HASS'},
+  {code:'02.005',name:'The Art of Reasoning',cu:12,pillar:'HASS'},
+  {code:'02.101',name:'Singapore: History, Culture and Society',cu:12,pillar:'HASS'},
+  {code:'02.104',name:'Technology and Society',cu:12,pillar:'HASS'},
+  {code:'02.109',name:'Introduction to Gender Studies',cu:12,pillar:'HASS'},
+  {code:'02.126',name:'Ethics and Social Responsibility',cu:12,pillar:'HASS'},
+  {code:'02.127',name:'Behavioural Economics',cu:12,pillar:'HASS'},
+  {code:'02.128',name:'Policy and Regulation of Emerging Technologies',cu:12,pillar:'HASS'},
+  {code:'02.130',name:'Health Economics and Policy',cu:12,pillar:'HASS'},
+  {code:'02.156DH',name:'Game of Histories',cu:12,pillar:'HASS'},
+  {code:'02.177',name:'Special Topic: On Wind & Water: Metaphysics, Design, and Technology',cu:12,pillar:'HASS'},
+  {code:'03.007',name:'Design Thinking and Innovation',cu:12,pillar:'SMT'},
+  // ISTD / CSD core
+  {code:'50.001',name:'Introduction to Information Systems & Programming',cu:12,pillar:'ISTD'},
+  {code:'50.002',name:'Computation Structures',cu:12,pillar:'ISTD'},
+  {code:'50.003',name:'Elements of Software Construction',cu:12,pillar:'ISTD'},
+  {code:'50.004',name:'Algorithms',cu:12,pillar:'ISTD'},
+  {code:'50.005',name:'Computer System Engineering',cu:12,pillar:'ISTD'},
+  {code:'50.007',name:'Machine Learning',cu:12,pillar:'ISTD'},
+  {code:'50.009',name:'Security',cu:12,pillar:'ISTD'},
+  {code:'50.012',name:'Networks',cu:12,pillar:'ISTD'},
+  {code:'50.017',name:'Systems & Control',cu:12,pillar:'ISTD'},
+  {code:'50.019',name:'Distributed Systems and Computing',cu:12,pillar:'ISTD'},
+  {code:'50.020',name:'Network Security',cu:12,pillar:'ISTD'},
+  {code:'50.021',name:'Artificial Intelligence',cu:12,pillar:'ISTD'},
+  {code:'50.034',name:'Introduction to Probability and Statistics',cu:12,pillar:'ISTD'},
+  {code:'50.035',name:'Computer Vision',cu:12,pillar:'ISTD'},
+  {code:'50.037',name:'Blockchain Technology',cu:12,pillar:'ISTD'},
+  {code:'50.038',name:'Computational Data Science',cu:12,pillar:'ISTD'},
+  {code:'50.039',name:'Theory of Computation',cu:12,pillar:'ISTD'},
+  {code:'50.040',name:'Natural Language Processing',cu:12,pillar:'ISTD'},
+  {code:'50.041',name:'Distributed Systems and Computing',cu:12,pillar:'ISTD'},
+  {code:'50.042',name:'Foundations of Cybersecurity',cu:12,pillar:'ISTD'},
+  {code:'50.043',name:'Software Engineering',cu:12,pillar:'ISTD'},
+  {code:'50.044',name:'Cloud Computing',cu:12,pillar:'ISTD'},
+  {code:'50.045',name:'Information Retrieval',cu:12,pillar:'ISTD'},
+  {code:'50.046',name:'Cloud Computing and Internet of Things',cu:12,pillar:'ISTD'},
+  {code:'50.048',name:'Topics in Deep Learning',cu:12,pillar:'ISTD'},
+  {code:'50.059',name:'Security Engineering',cu:12,pillar:'ISTD'},
+  // ISTD Capstone
+  {code:'50.001X',name:'ISTD Capstone',cu:18,pillar:'ISTD'},
+  // DAI
+  {code:'40.002',name:'DAI Foundations',cu:12,pillar:'DAI'},
+  {code:'40.011',name:'Data-Driven World',cu:12,pillar:'DAI'},
+  {code:'40.014',name:'Physical World',cu:12,pillar:'DAI'},
+  {code:'40.302',name:'Natural Language Processing for AI',cu:12,pillar:'DAI'},
+  {code:'40.319',name:'Statistical Machine Learning',cu:12,pillar:'DAI'},
+  // ESD
+  {code:'40.001',name:'Probability and Statistics',cu:12,pillar:'ESD'},
+  {code:'40.002',name:'Optimisation',cu:12,pillar:'ESD'},
+  {code:'40.004',name:'Statistics',cu:12,pillar:'ESD'},
+  {code:'40.011',name:'Data and Environment Analytics',cu:12,pillar:'ESD'},
+  {code:'40.012',name:'Manufacturing and Service Operations',cu:12,pillar:'ESD'},
+  {code:'40.014',name:'Engineering Systems Architecture',cu:12,pillar:'ESD'},
+  {code:'40.016',name:'Simulation Modelling and Analysis',cu:12,pillar:'ESD'},
+  {code:'40.017',name:'Scheduling',cu:12,pillar:'ESD'},
+  {code:'40.018',name:'Pricing',cu:12,pillar:'ESD'},
+  {code:'40.240',name:'System Modelling and Design',cu:12,pillar:'ESD'},
+  {code:'40.302',name:'Advanced Topics in OR: Stochastic Models',cu:12,pillar:'ESD'},
+  {code:'40.305',name:'Advanced Topics in OR: Optimisation',cu:12,pillar:'ESD'},
+  // EPD
+  {code:'30.001',name:'Circuits and Electronics',cu:12,pillar:'EPD'},
+  {code:'30.002',name:'Thermofluids',cu:12,pillar:'EPD'},
+  {code:'30.003',name:'Engineering Modelling',cu:12,pillar:'EPD'},
+  {code:'30.005',name:'Mechatronics',cu:12,pillar:'EPD'},
+  {code:'30.007',name:'Engineering Design Innovation',cu:12,pillar:'EPD'},
+  {code:'30.009',name:'Product Design',cu:12,pillar:'EPD'},
+  {code:'30.101',name:'Systems and Control',cu:12,pillar:'EPD'},
+  {code:'30.104',name:'Sensors and Actuators',cu:12,pillar:'EPD'},
+  {code:'30.107',name:'Physics of Biological Systems',cu:12,pillar:'EPD'},
+  {code:'30.111',name:'Optics and Waves',cu:12,pillar:'EPD'},
+  {code:'30.112',name:'Fluid Mechanics',cu:12,pillar:'EPD'},
+  {code:'30.201',name:'Mechanics of Materials',cu:12,pillar:'EPD'},
+  // ASD
+  {code:'20.001',name:'Drawing and Making',cu:12,pillar:'ASD'},
+  {code:'20.003',name:'Environmental Systems',cu:12,pillar:'ASD'},
+  {code:'20.111',name:'Architecture Design I',cu:12,pillar:'ASD'},
+  {code:'20.112',name:'Architecture Design II',cu:12,pillar:'ASD'},
+  {code:'20.201',name:'Architecture Theory',cu:12,pillar:'ASD'},
+  {code:'20.204',name:'Building Science',cu:12,pillar:'ASD'},
+  // SMT electives
+  {code:'01.101',name:'Technologies for Sustainable Global Health',cu:12,pillar:'SMT'},
+  {code:'01.102',name:'Energy Systems and Management',cu:12,pillar:'SMT'},
+  {code:'01.107',name:'Urban Transportation',cu:12,pillar:'SMT'},
+  {code:'01.115',name:'Science of Sound: Acoustics, Audio & Music',cu:12,pillar:'SMT'},
+];
+
+/* ════════════════════════════════
+   CONSTANTS
+════════════════════════════════ */
 const GRADE_PTS = {'A+':5.0,'A':5.0,'A-':4.5,'B+':4.0,'B':3.5,'B-':3.0,'C+':2.5,'C':2.0,'C-':1.5,'D+':1.5,'D':1.0,'F':0.0,'P':null};
 const GRADE_OPTS = ['A+','A','A-','B+','B','B-','C+','C','C-','D+','D','F','P'];
-const GRADE_CSS = {'A+':'g-ap','A':'g-ap','A-':'g-am','B+':'g-bp','B':'g-b','B-':'g-bm','C+':'g-c','C':'g-c','C-':'g-cc','D+':'g-d','D':'g-d','F':'g-f','P':'g-p'};
-const HON = [{l:'Highest Distinction',min:4.5},{l:'Distinction',min:4.0},{l:'Merit',min:3.5},{l:'Honours',min:3.0},{l:'Pass',min:2.0}];
-const SCORE_MAP = [
+const GRADE_CSS = {'A+':'gc-ap','A':'gc-ap','A-':'gc-am','B+':'gc-bp','B':'gc-b','B-':'gc-bm','C+':'gc-c','C':'gc-c','C-':'gc-cc','D+':'gc-d','D':'gc-d','F':'gc-f','P':'gc-p'};
+const SCORE_SCALE = [
   {min:90,g:'A',pts:5.0,desc:'Excellent'},{min:85,g:'A-',pts:4.5,desc:'Excellent (most aspects)'},
   {min:80,g:'B+',pts:4.0,desc:'Very good'},{min:75,g:'B',pts:3.5,desc:'Very good (most aspects)'},
   {min:70,g:'B-',pts:3.0,desc:'Good'},{min:65,g:'C+',pts:2.5,desc:'Fairly good'},
@@ -553,464 +654,451 @@ const SCORE_MAP = [
   {min:50,g:'D+',pts:1.5,desc:'Improvement needed'},{min:45,g:'D',pts:1.0,desc:'Minimally acceptable'},
   {min:0,g:'F',pts:0.0,desc:'Fail'}
 ];
-const GRADE_COL = {'A':'#059669','A-':'#10b981','B+':'#2563eb','B':'#3b82f6','B-':'#d97706','C+':'#f59e0b','C':'#dc2626','C-':'#dc2626','D+':'#b91c1c','D':'#991b1b','F':'#7f1d1d'};
+const GRADE_COL = {'A':'#059669','A-':'#10b981','B+':'#2563eb','B':'#3b82f6','B-':'#b45309','C+':'#d97706','C':'#dc2626','C-':'#dc2626','D+':'#b91c1c','D':'#991b1b','F':'#7f1d1d'};
+const HON_SCALE = [{l:'Highest Distinction',min:4.5},{l:'Distinction',min:4.0},{l:'Merit',min:3.5},{l:'Honours',min:3.0},{l:'Pass',min:2.0}];
 
-/* ════════════════ STATE ════════════════ */
-let state = { profile: null, terms: [], planTarget: { gpa: 3.5, label: 'Merit' } };
+/* ════════════════════════════════
+   STATE
+════════════════════════════════ */
+let S = { profile: null, terms: [], planTarget: { gpa: 3.5, label: 'Merit' } };
+let obGoal = { gpa: 3.5, label: 'Merit' };
+let obStep = 0;
+let planTarget = { gpa: 3.5, label: 'Merit' };
 
-function save() { try { localStorage.setItem('sutdgt_v2', JSON.stringify(state)); } catch(e){} }
-function load() { try { const d = localStorage.getItem('sutdgt_v2'); if(d) state = JSON.parse(d); } catch(e){} }
+function save() { try { localStorage.setItem('sutdgt3', JSON.stringify(S)); } catch(e){} }
+function load() { try { const d = localStorage.getItem('sutdgt3'); if(d) S = JSON.parse(d); } catch(e){} }
 
-/* ════════════════ ONBOARDING ════════════════ */
-let currentStep = 0;
-let selectedMethod = null;
-let selectedGoal = { gpa: 3.5, label: 'Merit' };
-
+/* ════════════════════════════════
+   ONBOARDING
+════════════════════════════════ */
 function goStep(n) {
-  document.getElementById('step-' + currentStep).classList.remove('active');
-  currentStep = n;
-  document.getElementById('step-' + n).classList.add('active');
-  // Update dots
-  for (let i = 0; i <= 3; i++) {
-    const dot = document.getElementById('dot-' + i);
-    dot.classList.toggle('done', i < n);
-    dot.classList.toggle('active', i === n);
-    if (i < 3) document.getElementById('line-' + i).classList.toggle('done', i < n);
-  }
+  document.getElementById('s'+obStep).classList.remove('active');
+  obStep = n;
+  document.getElementById('s'+n).classList.add('active');
+  [0,1,2,3].forEach(i => {
+    document.getElementById('d'+i).className = 'p-dot' + (i<n?' done':i===n?' cur':'');
+    if(i<3) document.getElementById('l'+i).className = 'p-line' + (i<n?' done':'');
+  });
 }
 
-function validateStep1() {
-  const name = document.getElementById('q-name').value.trim();
-  const prog = document.getElementById('q-prog').value;
-  const year = document.getElementById('q-year').value;
-  if (!name) { document.getElementById('q-name').focus(); return; }
-  if (!prog) { document.getElementById('q-prog').focus(); return; }
-  if (!year) { document.getElementById('q-year').focus(); return; }
+function s1next() {
+  if (!document.getElementById('q-name').value.trim()) { document.getElementById('q-name').focus(); return; }
+  if (!document.getElementById('q-prog').value) { document.getElementById('q-prog').focus(); return; }
   goStep(2);
 }
 
-function selectMethod(m) {
-  selectedMethod = m;
-  document.getElementById('opt-upload').classList.toggle('selected', m === 'upload');
-  document.getElementById('opt-manual').classList.toggle('selected', m === 'manual');
-  document.getElementById('upload-section').classList.toggle('hidden', m !== 'upload');
+function selMethod(m) {
+  document.getElementById('opt-up').classList.toggle('sel', m==='up');
+  document.getElementById('opt-man').classList.toggle('sel', m==='man');
+  document.getElementById('upload-area').classList.toggle('hidden', m!=='up');
 }
 
-function selectGoal(el, gpa, label) {
-  document.querySelectorAll('[id^="goal-"]').forEach(e => e.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedGoal = { gpa, label };
+function dropFile(e) { e.preventDefault(); document.getElementById('upload-zone').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f) processFile(f); }
+function handleFile(e) { const f=e.target.files[0]; if(f) processFile(f); }
+function processFile(f) { document.getElementById('upload-done').classList.add('show'); }
+
+function selGoal(el, gpa, label) {
+  document.querySelectorAll('.goal-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  obGoal = { gpa, label };
 }
 
-function finishOnboarding() {
-  const name = document.getElementById('q-name').value.trim();
+function finish() {
+  const name = document.getElementById('q-name').value.trim() || 'Student';
   const prog = document.getElementById('q-prog').value;
   const year = document.getElementById('q-year').value;
-  const totalCu = parseInt(document.getElementById('q-totalcu').value) || 240;
-
-  state.profile = { name, prog, year, totalCu, initials: name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) };
-  state.planTarget = selectedGoal;
-
-  // sync total CU to planner
-  document.getElementById('plan-total-cu').value = totalCu;
-
+  const tcu = parseInt(document.getElementById('q-tcu').value) || 240;
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  S.profile = { name, prog, year, tcu, initials };
+  S.planTarget = obGoal;
+  planTarget = obGoal;
+  document.getElementById('p-total').value = tcu;
   save();
   launchApp();
 }
 
-/* ════════════════ TRANSCRIPT PARSING ════════════════ */
-function handleDrag(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag'); }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('upload-zone').classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type === 'application/pdf') processFile(file);
-}
-function handleFileSelect(e) { const f = e.target.files[0]; if(f) processFile(f); }
-
-function processFile(file) {
-  const resultEl = document.getElementById('upload-result');
-  const previewEl = document.getElementById('parsed-preview');
-  resultEl.classList.remove('hidden');
-  resultEl.innerHTML = '⏳ Reading your transcript...';
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    // We can't natively parse PDF without a library in pure HTML
-    // Instead show instructions and let user confirm manual parse or use text
-    resultEl.innerHTML = `✅ File received: <strong>${file.name}</strong><br>
-      <span style="font-size:12px;color:var(--text2)">We've detected your file. Since PDF parsing requires a library, we'll help you confirm your terms manually on the next screen — your grades are pre-structured for quick entry.</span>`;
-
-    // Try basic text extraction hint
-    previewEl.classList.remove('hidden');
-    previewEl.innerHTML = `
-      <div style="font-size:13px;color:var(--text2);line-height:1.7;padding:12px;background:var(--amber-l);border:1px solid var(--amber-b);border-radius:var(--r)">
-        <strong style="color:var(--amber)">How to use your transcript:</strong><br>
-        On the next screen, add each term and enter your grades as shown on your transcript. 
-        Use <strong>P</strong> for Pass modules, letter grades (A, B+, B-, etc.) for graded ones. 
-        Modules with S/P/U don't count toward CGPA.
-      </div>`;
-    document.getElementById('step2-next').textContent = 'Continue — I\'ll enter manually →';
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-/* ════════════════ APP LAUNCH ════════════════ */
+/* ════════════════════════════════
+   APP LAUNCH
+════════════════════════════════ */
 function launchApp() {
-  document.getElementById('onboard-container').classList.add('hidden');
-  document.getElementById('app-container').classList.remove('hidden');
-  document.getElementById('main-tabs').classList.remove('hidden');
-  document.getElementById('top-pill').classList.remove('hidden');
-  document.getElementById('reset-btn').classList.remove('hidden');
+  document.getElementById('ob').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('tab-bar').classList.add('show');
+  document.getElementById('cgpa-pill').classList.add('show');
+  document.getElementById('reset-btn').classList.add('show');
+  if(S.profile) document.getElementById('p-total').value = S.profile.tcu || 240;
+  planTarget = S.planTarget || { gpa: 3.5, label: 'Merit' };
+  // sync planner target buttons
+  syncPlannerButtons();
   renderGrades();
   updateTopbar();
+}
 
-  // Set planner target from onboarding goal
-  document.querySelectorAll('.tc').forEach(c => c.classList.remove('sel'));
-  const targetMap = { 3.0: 0, 3.5: 1, 4.0: 2, 4.5: 3 };
-  const idx = targetMap[selectedGoal.gpa] ?? 1;
-  document.querySelectorAll('.tc')[idx]?.classList.add('sel');
+function syncPlannerButtons() {
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('sel'));
+  const map = {3.0:0,3.5:1,4.0:2,4.5:3};
+  const idx = map[planTarget.gpa];
+  if(idx!==undefined) document.querySelectorAll('.tc')[idx]?.classList.add('sel');
 }
 
 function resetApp() {
-  if (!confirm('This will clear all your data and restart setup. Are you sure?')) return;
-  state = { profile: null, terms: [], planTarget: { gpa: 3.5, label: 'Merit' } };
-  save();
-  location.reload();
+  if(!confirm('Clear all your data and restart setup?')) return;
+  S = { profile: null, terms: [], planTarget: { gpa: 3.5, label: 'Merit' } };
+  save(); location.reload();
 }
 
-/* ════════════════ TABS ════════════════ */
+/* ════════════════════════════════
+   TABS
+════════════════════════════════ */
 function showTab(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
-  btn.classList.add('active');
-  if (id === 'overview') renderOverview();
-  if (id === 'planner') calcPlanner();
-  if (id === 'converter') { buildScoreTable(); syncScore('num', 75); }
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id==='overview') renderOverview();
+  if(id==='planner') calcPlanner();
+  if(id==='converter') { buildScoreTable(); syncSc('sl',75); }
 }
 
-/* ════════════════ CGPA CALC ════════════════ */
+/* ════════════════════════════════
+   CGPA
+════════════════════════════════ */
 function cgpaCalc() {
-  let pts = 0, cu = 0;
-  state.terms.forEach(t => t.mods.forEach(m => {
-    const p = GRADE_PTS[m.grade];
-    if (p !== null && p !== undefined) { pts += p * m.cu; cu += m.cu; }
+  let pts=0, cu=0;
+  S.terms.forEach(t=>t.mods.forEach(m=>{
+    const p=GRADE_PTS[m.grade];
+    if(p!==null&&p!==undefined){pts+=p*m.cu;cu+=m.cu;}
   }));
-  return cu > 0 ? { cgpa: pts / cu, cu } : { cgpa: null, cu: 0 };
+  return cu>0?{cgpa:pts/cu,cu}:{cgpa:null,cu:0};
 }
 
-function termGPA(term) {
-  let pts = 0, cu = 0;
-  term.mods.forEach(m => { const p = GRADE_PTS[m.grade]; if (p !== null && p !== undefined) { pts += p * m.cu; cu += m.cu; } });
-  return cu > 0 ? pts / cu : null;
+function termGPA(t) {
+  let pts=0,cu=0;
+  t.mods.forEach(m=>{const p=GRADE_PTS[m.grade];if(p!==null&&p!==undefined){pts+=p*m.cu;cu+=m.cu;}});
+  return cu>0?pts/cu:null;
 }
 
-function getHon(cgpa) { return HON.find(h => cgpa >= h.min) || null; }
+function getHon(cgpa) { return HON_SCALE.find(h=>cgpa>=h.min)||null; }
+function honBadge(cgpa) { return cgpa>=4.5?'bg':cgpa>=4.0?'bb':cgpa>=3.0?'ba':'br'; }
+function honCol(cgpa) { return cgpa>=4.5?'#059669':cgpa>=4.0?'#2563eb':cgpa>=3.5?'#b45309':cgpa>=3.0?'#b45309':'#dc2626'; }
 
-function honClass(cgpa) {
-  if (!cgpa) return 'badge-grey';
-  if (cgpa >= 4.5) return 'badge-green';
-  if (cgpa >= 4.0) return 'badge-blue';
-  if (cgpa >= 3.0) return 'badge-amber';
-  return 'badge-red';
-}
-
-/* ════════════════ UPDATE TOPBAR ════════════════ */
 function updateTopbar() {
-  const { cgpa } = cgpaCalc();
-  const num = document.getElementById('top-cgpa');
-  const hon = document.getElementById('top-hon');
-  if (cgpa === null) { num.textContent = '—'; hon.textContent = ''; hon.className = 'badge'; return; }
-  num.textContent = cgpa.toFixed(2);
-  const h = getHon(cgpa);
-  if (h) { hon.textContent = h.l; hon.className = `badge ${honClass(cgpa)}`; }
+  const {cgpa}=cgpaCalc();
+  const num=document.getElementById('pill-cgpa');
+  const hon=document.getElementById('pill-hon');
+  if(!cgpa){num.textContent='—';hon.textContent='';hon.className='badge';return;}
+  num.textContent=cgpa.toFixed(2);
+  const h=getHon(cgpa);
+  if(h){hon.textContent=h.l;hon.className=`badge ${honBadge(cgpa)}`;}
 }
 
-/* ════════════════ GRADES TAB ════════════════ */
+/* ════════════════════════════════
+   MODULE SEARCH
+════════════════════════════════ */
+let ddTimers = {};
+let focusIdx = {};
+
+function setupSearch(ti) {
+  const input = document.getElementById(`ms-${ti}`);
+  const dd = document.getElementById(`dd-${ti}`);
+  if (!input || !dd) return;
+
+  focusIdx[ti] = -1;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { dd.classList.remove('open'); return; }
+    const hits = MODULES.filter(m =>
+      m.code.toLowerCase().includes(q) || m.name.toLowerCase().includes(q)
+    ).slice(0, 8);
+    renderDropdown(ti, hits, q);
+    focusIdx[ti] = -1;
+  });
+
+  input.addEventListener('keydown', e => {
+    const items = dd.querySelectorAll('.dd-item');
+    if (e.key === 'ArrowDown') { e.preventDefault(); focusIdx[ti] = Math.min(focusIdx[ti]+1, items.length-1); items.forEach((it,i)=>it.classList.toggle('focused',i===focusIdx[ti])); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); focusIdx[ti] = Math.max(focusIdx[ti]-1, -1); items.forEach((it,i)=>it.classList.toggle('focused',i===focusIdx[ti])); }
+    else if (e.key === 'Enter') { e.preventDefault(); if(focusIdx[ti]>=0) items[focusIdx[ti]]?.click(); }
+    else if (e.key === 'Escape') { dd.classList.remove('open'); }
+  });
+
+  input.addEventListener('focus', () => {
+    const q = input.value.trim().toLowerCase();
+    if (q) { const hits=MODULES.filter(m=>m.code.toLowerCase().includes(q)||m.name.toLowerCase().includes(q)).slice(0,8); renderDropdown(ti,hits,q); }
+  });
+
+  document.addEventListener('click', e => {
+    if (!input.contains(e.target) && !dd.contains(e.target)) dd.classList.remove('open');
+  });
+}
+
+function renderDropdown(ti, hits, q) {
+  const dd = document.getElementById(`dd-${ti}`);
+  if (!hits.length) {
+    dd.innerHTML = `<div class="dd-empty">No module found — type a name or enter manually</div>`;
+    dd.classList.add('open'); return;
+  }
+  dd.innerHTML = hits.map(m => {
+    const hl = s => s.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'), x=>`<mark style="background:var(--accent-l);color:var(--accent);font-weight:600;border-radius:2px">${x}</mark>`);
+    return `<div class="dd-item" onclick="pickModule(${ti},'${m.code}','${m.name.replace(/'/g,"\\'")}',${m.cu},'${m.pf?'P':'B'}')">
+      <div><div class="dd-name">${hl(m.name)}</div><div class="dd-code">${m.code}</div></div>
+      <span class="dd-pillar">${m.pillar}</span>
+    </div>`;
+  }).join('');
+  dd.classList.add('open');
+}
+
+function pickModule(ti, code, name, cu, defaultGrade) {
+  const input = document.getElementById(`ms-${ti}`);
+  const cuInput = document.getElementById(`mc-${ti}`);
+  const gradeSelect = document.getElementById(`mg-${ti}`);
+  const dd = document.getElementById(`dd-${ti}`);
+  input.value = `${code} — ${name}`;
+  if(cuInput) cuInput.value = cu;
+  if(gradeSelect && defaultGrade === 'P') gradeSelect.value = 'P';
+  dd.classList.remove('open');
+  input.dataset.modcode = code;
+  input.dataset.modname = name;
+}
+
+/* ════════════════════════════════
+   GRADES TAB
+════════════════════════════════ */
 function renderGrades() {
   const list = document.getElementById('terms-list');
   const footer = document.getElementById('grades-footer');
 
-  if (!state.terms.length) {
-    list.innerHTML = `<div class="empty">
-      <span class="empty-icon">📝</span>
-      <div class="empty-title">No terms added yet</div>
-      <div class="empty-sub">Click "Add a new term" below to start entering your grades.<br>Add one term at a time — you can always add more later.</div>
-    </div>`;
-    footer.classList.add('hidden');
-    return;
+  if (!S.terms.length) {
+    list.innerHTML = `<div class="empty"><span class="empty-icon">📝</span><div class="empty-title">No terms added yet</div><div class="empty-sub">Click "Add a new term" below to start.<br>Add one term at a time — you can always add more.</div></div>`;
+    footer.classList.remove('show'); return;
   }
 
-  list.innerHTML = state.terms.map((term, ti) => {
+  list.innerHTML = S.terms.map((term, ti) => {
     const gpa = termGPA(term);
-    const gpaBadge = gpa === null ? '' : `<span class="badge ${honClass(gpa)}">${gpa.toFixed(2)}</span>`;
-    const gradeCount = term.mods.filter(m => GRADE_PTS[m.grade] !== null && GRADE_PTS[m.grade] !== undefined).length;
+    const gpaStr = gpa!==null?gpa.toFixed(2):'N/A';
+    const gpaCls = gpa===null?'bgr':honBadge(gpa);
+    const gradedCount = term.mods.filter(m=>GRADE_PTS[m.grade]!==null&&GRADE_PTS[m.grade]!==undefined).length;
 
     const modsHtml = !term.mods.length
-      ? `<tr><td colspan="4" style="text-align:center;color:var(--text3);font-size:12px;padding:14px">No modules yet — add one below</td></tr>`
-      : term.mods.map((m, mi) => `
-        <tr>
-          <td class="mod-main">${m.name}</td>
-          <td class="mod-cu-td">${GRADE_PTS[m.grade] === null ? '—' : m.cu}</td>
-          <td class="mod-grade-td"><span class="gt ${GRADE_CSS[m.grade] || 'g-p'}">${m.grade}</span></td>
-          <td class="mod-del-td"><button class="del-btn" onclick="delMod(${ti},${mi})">×</button></td>
-        </tr>`).join('');
+      ? `<div class="mod-empty">No modules yet — search or type a module below</div>`
+      : `<div class="mod-list">${term.mods.map((m,mi)=>`
+        <div class="mod-row">
+          <div class="mod-name">${m.name}</div>
+          <div class="mod-cu">${GRADE_PTS[m.grade]===null?'—':m.cu}</div>
+          <div class="mod-grade"><span class="gc ${GRADE_CSS[m.grade]||'gc-p'}">${m.grade}</span></div>
+          <div class="mod-del"><button class="del-btn" onclick="delMod(${ti},${mi})" title="Remove">
+            <svg viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button></div>
+        </div>`).join('')}</div>`;
 
-    const gradeOptsHtml = GRADE_OPTS.map(g => `<option ${g==='B'?'selected':''}>${g}</option>`).join('');
+    const gradeOptHtml = GRADE_OPTS.map(g=>`<option ${g==='B'?'selected':''}>${g}</option>`).join('');
 
     return `<div class="term-card">
-      <div class="term-header">
+      <div class="term-head">
         <div>
-          <div class="term-name-txt">${term.name}</div>
-          <div class="term-gpa-txt">${gradeCount} graded module${gradeCount!==1?'s':''} · Term GPA: ${gpa!==null?gpa.toFixed(2):'N/A'} ${gpaBadge}</div>
+          <div class="term-name">${term.name}</div>
+          <div class="term-meta">${gradedCount} graded mod${gradedCount!==1?'s':''} · Term GPA: <span class="badge ${gpaCls}" style="font-size:10px;padding:2px 7px">${gpaStr}</span></div>
         </div>
-        <button class="btn btn-sm btn-ghost" onclick="delTerm(${ti})" style="font-size:11px">Remove</button>
+        <div class="term-actions">
+          <button class="btn btn-s btn-sm" onclick="delTerm(${ti})">Remove term</button>
+        </div>
       </div>
-      <table class="mod-table">
-        <thead><tr style="border-bottom:1px solid var(--border2)">
-          <th style="padding:6px 18px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Module</th>
-          <th style="padding:6px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:center;width:44px">CUs</th>
-          <th style="padding:6px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:center;width:56px">Grade</th>
-          <th style="width:32px"></th>
-        </tr></thead>
-        <tbody>${modsHtml}</tbody>
-      </table>
-      <div class="add-mod-bar">
-        <input type="text" placeholder="Module name e.g. 50.001 Intro to CS" id="mn-${ti}">
-        <input type="number" value="12" min="1" max="36" id="mc-${ti}">
-        <select id="mg-${ti}">${gradeOptsHtml}</select>
-        <button class="btn btn-primary btn-sm" onclick="addMod(${ti})">Add</button>
+      ${modsHtml}
+      <div class="add-mod-wrap">
+        <div class="add-mod-grid">
+          <div class="search-wrap">
+            <span class="search-icon"><svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+            <input type="text" class="search-input" id="ms-${ti}" placeholder="Search module name or code…" autocomplete="off">
+            <div class="dropdown" id="dd-${ti}"></div>
+          </div>
+          <input type="number" value="12" min="1" max="36" id="mc-${ti}" style="background:var(--bg2);font-size:12px;padding:7px 10px">
+          <select id="mg-${ti}" style="background:var(--bg2);font-size:12px;padding:7px 10px">${gradeOptHtml}</select>
+          <button class="btn btn-p btn-sm" onclick="addMod(${ti})">Add</button>
+        </div>
+        <div class="p-hint">Search by code (e.g. 50.001) or name · Use grade P for pass/fail modules</div>
       </div>
-      <div class="p-hint">Use P for pass/fail modules — they won't affect CGPA</div>
     </div>`;
   }).join('');
 
-  footer.classList.remove('hidden');
-  const { cgpa, cu } = cgpaCalc();
-  const hon = cgpa ? getHon(cgpa) : null;
-  document.getElementById('footer-cgpa').textContent = cgpa ? cgpa.toFixed(2) : '—';
-  document.getElementById('footer-hon').innerHTML = hon ? `<span class="badge ${honClass(cgpa)}" style="font-size:13px;padding:5px 14px">${hon.l}</span>` : '';
-  document.getElementById('footer-cu').textContent = cu ? `${cu} graded CUs` : '';
+  // Setup search for each term
+  S.terms.forEach((_, ti) => setupSearch(ti));
+
+  // Footer
+  footer.classList.add('show');
+  const {cgpa,cu}=cgpaCalc();
+  const hon = cgpa?getHon(cgpa):null;
+  document.getElementById('gf-cgpa').textContent = cgpa?cgpa.toFixed(2):'—';
+  document.getElementById('gf-hon').innerHTML = hon?`<span class="badge ${honBadge(cgpa)}" style="font-size:13px;padding:5px 14px">${hon.l}</span>`:'';
+  document.getElementById('gf-cu').textContent = cu?`${cu} graded CUs`:'' ;
   updateTopbar();
 }
 
-/* ── Term / mod actions ── */
+/* ── Term/mod actions ── */
 function openTermModal() {
-  document.getElementById('new-term-name').value = '';
+  document.getElementById('new-term').value='';
   document.getElementById('term-modal').classList.add('open');
-  setTimeout(() => document.getElementById('new-term-name').focus(), 50);
+  setTimeout(()=>document.getElementById('new-term').focus(),50);
 }
 function closeModal() { document.getElementById('term-modal').classList.remove('open'); }
-document.getElementById('new-term-name').addEventListener('keydown', e => { if(e.key==='Enter') confirmAddTerm(); if(e.key==='Escape') closeModal(); });
+document.getElementById('new-term').addEventListener('keydown',e=>{if(e.key==='Enter')confirmTerm();if(e.key==='Escape')closeModal();});
 
-function confirmAddTerm() {
-  const name = document.getElementById('new-term-name').value.trim();
-  if (!name) return;
-  state.terms.push({ name, mods: [] });
-  save(); closeModal(); renderGrades();
+function confirmTerm() {
+  const name=document.getElementById('new-term').value.trim();
+  if(!name)return;
+  S.terms.push({name,mods:[]});
+  save();closeModal();renderGrades();
 }
 
 function delTerm(ti) {
-  if (!confirm(`Remove "${state.terms[ti].name}" and all its modules?`)) return;
-  state.terms.splice(ti, 1); save(); renderGrades(); updateTopbar();
+  if(!confirm(`Remove "${S.terms[ti].name}" and all its modules?`))return;
+  S.terms.splice(ti,1);save();renderGrades();updateTopbar();
 }
 
 function addMod(ti) {
-  const n = document.getElementById(`mn-${ti}`);
-  const c = document.getElementById(`mc-${ti}`);
-  const g = document.getElementById(`mg-${ti}`);
-  if (!n.value.trim()) { n.focus(); return; }
-  state.terms[ti].mods.push({ name: n.value.trim(), cu: parseInt(c.value)||12, grade: g.value });
-  n.value = '';
-  save(); renderGrades();
+  const inp=document.getElementById(`ms-${ti}`);
+  const cu=document.getElementById(`mc-${ti}`);
+  const gr=document.getElementById(`mg-${ti}`);
+  const raw=inp.value.trim();
+  if(!raw){inp.focus();return;}
+  // If user picked from dropdown, use stored data; else use raw input
+  const name=inp.dataset.modname||raw;
+  S.terms[ti].mods.push({name,cu:parseInt(cu.value)||12,grade:gr.value});
+  inp.value='';
+  delete inp.dataset.modname;delete inp.dataset.modcode;
+  save();renderGrades();
 }
 
-function delMod(ti, mi) {
-  state.terms[ti].mods.splice(mi, 1); save(); renderGrades(); updateTopbar();
-}
+function delMod(ti,mi){S.terms[ti].mods.splice(mi,1);save();renderGrades();updateTopbar();}
 
-/* ════════════════ OVERVIEW ════════════════ */
+/* ════════════════════════════════
+   OVERVIEW
+════════════════════════════════ */
 function renderOverview() {
-  const { cgpa, cu } = cgpaCalc();
-  const empty = document.getElementById('ov-empty');
-  const content = document.getElementById('ov-content');
+  const {cgpa,cu}=cgpaCalc();
+  const empty=document.getElementById('ov-empty');
+  const content=document.getElementById('ov-content');
+  if(!S.terms.length||cu===0){empty.classList.remove('hidden');content.classList.add('hidden');return;}
+  empty.classList.add('hidden');content.classList.remove('hidden');
 
-  if (!state.terms.length || cu === 0) { empty.classList.remove('hidden'); content.classList.add('hidden'); return; }
-  empty.classList.add('hidden'); content.classList.remove('hidden');
+  const p=S.profile||{};
+  document.getElementById('ov-profile').innerHTML=`
+    <div class="avatar">${p.initials||'?'}</div>
+    <div><div class="profile-name">${p.name||'Student'}</div>
+    <div class="profile-meta">${p.prog||''}${p.year?' · Class of '+(parseInt(p.year)+4):''}</div></div>`;
 
-  const p = state.profile || {};
-  document.getElementById('ov-profile').innerHTML = `
-    <div class="avatar">${p.initials || '?'}</div>
-    <div>
-      <div class="profile-name">${p.name || 'Student'}</div>
-      <div class="profile-meta">${p.prog || ''} ${p.year ? '· Class of ' + (parseInt(p.year)+4) : ''}</div>
-    </div>`;
+  const tGPAs=S.terms.map(t=>termGPA(t)).filter(g=>g!==null);
+  const best=tGPAs.length?Math.max(...tGPAs):null;
+  const hon=getHon(cgpa);
+  const col=honCol(cgpa);
 
-  const termGPAs = state.terms.map(t => termGPA(t)).filter(g => g !== null);
-  const best = termGPAs.length ? Math.max(...termGPAs) : null;
-  const hon = getHon(cgpa);
-  const col = cgpa >= 4.5 ? 'var(--green)' : cgpa >= 4.0 ? 'var(--accent)' : cgpa >= 3.5 ? 'var(--amber)' : cgpa >= 3.0 ? 'var(--amber)' : 'var(--red)';
-
-  document.getElementById('ov-stats').innerHTML = `
-    <div class="stat"><div class="stat-lbl">CGPA</div><div class="stat-val" style="color:${col}">${cgpa.toFixed(2)}</div><div class="stat-sub">${hon ? hon.l : '—'}</div></div>
+  document.getElementById('ov-stats').innerHTML=`
+    <div class="stat"><div class="stat-lbl">CGPA</div><div class="stat-val" style="color:${col}">${cgpa.toFixed(2)}</div><div class="stat-sub">${hon?hon.l:'—'}</div></div>
     <div class="stat"><div class="stat-lbl">Graded CUs</div><div class="stat-val">${cu}</div><div class="stat-sub">counted toward CGPA</div></div>
-    <div class="stat"><div class="stat-lbl">Best Term</div><div class="stat-val" style="color:var(--green)">${best !== null ? best.toFixed(2) : '—'}</div><div class="stat-sub">highest term GPA</div></div>`;
+    <div class="stat"><div class="stat-lbl">Best Term</div><div class="stat-val" style="color:var(--green)">${best!==null?best.toFixed(2):'—'}</div><div class="stat-sub">highest term GPA</div></div>`;
 
-  const trendCols = { 5.0:'#059669', 4.0:'#2563eb', 3.5:'#d97706', 3.0:'#d97706', 0:'#dc2626' };
-  function trendCol(g) { return g>=4.5?'#059669':g>=4.0?'#2563eb':g>=3.5?'#d97706':g>=3.0?'#d97706':'#dc2626'; }
+  document.getElementById('ov-trend').innerHTML=S.terms.map(t=>{
+    const g=termGPA(t);if(g===null)return'';
+    const pct=Math.round((g/5)*100);const c=honCol(g);
+    return `<div class="trend-item"><span class="trend-lbl">${t.name}</span><div class="trend-track"><div class="trend-fill" style="width:${pct}%;background:${c}"></div></div><span class="trend-val" style="color:${c}">${g.toFixed(2)}</span></div>`;
+  }).join('')||'<div style="font-size:12px;color:var(--text3)">No graded terms yet</div>';
 
-  document.getElementById('ov-trend').innerHTML = state.terms.map(t => {
-    const g = termGPA(t); if(g===null) return '';
-    const pct = Math.round((g/5.0)*100);
-    const c = trendCol(g);
-    return `<div class="trend-row">
-      <span class="trend-lbl">${t.name}</span>
-      <div class="trend-track"><div class="trend-fill" style="width:${pct}%;background:${c}"></div></div>
-      <span class="trend-val" style="color:${c}">${g.toFixed(2)}</span>
-    </div>`;
-  }).join('') || '<div style="font-size:13px;color:var(--text3)">No data yet</div>';
-
-  document.getElementById('ov-hon').innerHTML = HON.map(h => {
-    const isCur = cgpa >= h.min && (!HON[HON.indexOf(h)-1] || cgpa < HON[HON.indexOf(h)-1].min);
-    return `<div class="hon-row ${isCur?'cur':''}">
-      <div style="font-size:13px;font-weight:${isCur?600:400}">${h.l}${isCur?' ← you':''}</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:12px;font-family:var(--mono);color:var(--text2)">${h.min.toFixed(2)}+</span>
-        <span style="font-size:11px;font-family:var(--mono);color:${cgpa>=h.min?'var(--green)':'var(--red)'}">${cgpa>=h.min?'✓':'–'+(h.min-cgpa).toFixed(2)}</span>
-      </div>
+  document.getElementById('ov-hon').innerHTML=HON_SCALE.map(h=>{
+    const isCur=cgpa>=h.min&&(!HON_SCALE[HON_SCALE.indexOf(h)-1]||cgpa<HON_SCALE[HON_SCALE.indexOf(h)-1].min);
+    return `<div class="hon-item ${isCur?'cur':''}">
+      <div><div class="hon-name">${h.l}${isCur?' ← you':''}</div><div class="hon-range">${h.min.toFixed(2)}+</div></div>
+      <span style="font-size:11px;font-family:var(--mono);color:${cgpa>=h.min?'var(--green)':'var(--red)'}">${cgpa>=h.min?'✓':'–'+(h.min-cgpa).toFixed(2)}</span>
     </div>`;
   }).join('');
 }
 
-/* ════════════════ PLANNER ════════════════ */
-let planTarget = { gpa: 3.5, label: 'Merit' };
-
-function selTarget(el, gpa, label) {
-  document.querySelectorAll('.tc').forEach(c => c.classList.remove('sel'));
+/* ════════════════════════════════
+   PLANNER
+════════════════════════════════ */
+function selTarget(el,gpa,label) {
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
-  planTarget = { gpa, label };
+  planTarget={gpa,label};
   calcPlanner();
 }
 
 function calcPlanner() {
-  const { cgpa, cu: doneCu } = cgpaCalc();
-  const totalCu = parseInt(document.getElementById('plan-total-cu').value) || 240;
-  const remCu = Math.max(0, totalCu - doneCu);
+  const {cgpa,cu:doneCu}=cgpaCalc();
+  const totalCu=parseInt(document.getElementById('p-total').value)||240;
+  const remCu=Math.max(0,totalCu-doneCu);
+  document.getElementById('p-done').textContent=doneCu;
+  document.getElementById('p-rem').textContent=remCu;
 
-  document.getElementById('plan-done').textContent = doneCu;
-  document.getElementById('plan-rem').textContent = remCu;
+  const rEl=document.getElementById('p-result');
+  const wEl=document.getElementById('p-whatif');
 
-  const resultEl = document.getElementById('plan-result');
-  const whatifEl = document.getElementById('plan-whatif');
-
-  if (!cgpa) {
-    resultEl.innerHTML = `<div class="rbox info"><div class="rbox-eye">note</div><div class="rbox-main">Add your grades first</div><div class="rbox-detail">Go to My Grades and enter your modules to use the planner.</div></div>`;
-    whatifEl.innerHTML = '';
-    return;
+  if(!cgpa){
+    rEl.innerHTML=`<div class="rbox info"><div class="rbox-eye">note</div><div class="rbox-main">Add your grades first</div><div class="rbox-detail">Head to My Grades and enter your modules to use the planner.</div></div>`;
+    wEl.innerHTML='';return;
   }
 
-  const { gpa: tgt, label: lbl } = planTarget;
-  const curPts = cgpa * doneCu;
-  const neededPts = tgt * totalCu - curPts;
-  const reqAvg = remCu > 0 ? neededPts / remCu : 0;
-  const maxCgpa = (curPts + 5.0 * remCu) / totalCu;
+  const {gpa:tgt,label:lbl}=planTarget;
+  const curPts=cgpa*doneCu;
+  const neededPts=tgt*totalCu-curPts;
+  const reqAvg=remCu>0?neededPts/remCu:0;
+  const maxCgpa=(curPts+5.0*remCu)/totalCu;
 
-  function ptsLbl(p) {
-    if(p>=4.75)return'A / A+ (5.0 pts)';
-    if(p>=4.25)return'A- (4.5 pts)';
-    if(p>=3.75)return'B+ (4.0 pts)';
-    if(p>=3.25)return'B (3.5 pts)';
-    if(p>=2.75)return'B- (3.0 pts)';
-    if(p>=2.25)return'C+ (2.5 pts)';
-    return'C or below';
-  }
+  function pLbl(p){return p>=4.75?'A / A+':p>=4.25?'A-':p>=3.75?'B+':p>=3.25?'B':p>=2.75?'B-':p>=2.25?'C+':'C or below';}
 
-  if (cgpa >= tgt) {
-    resultEl.innerHTML = `<div class="rbox ok"><div class="rbox-eye">status</div><div class="rbox-main">Already on track for ${lbl}!</div><div class="rbox-detail">Your current CGPA of ${cgpa.toFixed(2)} meets the ${tgt.toFixed(2)} threshold. Maintain your performance to lock it in.</div></div>`;
-  } else if (reqAvg > 5.0) {
-    resultEl.innerHTML = `<div class="rbox bad"><div class="rbox-eye">status</div><div class="rbox-main">${lbl} is no longer reachable</div><div class="rbox-detail">Even with A+ in everything remaining, max CGPA = ${maxCgpa.toFixed(2)}. Consider aiming for ${getHon(maxCgpa)?.l || 'a lower target'}.</div></div>`;
+  if(cgpa>=tgt){
+    rEl.innerHTML=`<div class="rbox ok"><div class="rbox-eye">status</div><div class="rbox-main">On track for ${lbl}!</div><div class="rbox-detail">Your current CGPA of ${cgpa.toFixed(2)} meets the ${tgt.toFixed(2)} threshold. Keep going to lock it in.</div></div>`;
+  } else if(reqAvg>5.0){
+    rEl.innerHTML=`<div class="rbox bad"><div class="rbox-eye">status</div><div class="rbox-main">${lbl} is no longer reachable</div><div class="rbox-detail">Max achievable CGPA with remaining CUs is ${maxCgpa.toFixed(2)}. Consider targeting ${getHon(maxCgpa)?.l||'a lower class'}.</div></div>`;
   } else {
-    const cls = reqAvg >= 4.5 ? 'bad' : reqAvg >= 3.5 ? 'warn' : 'ok';
-    resultEl.innerHTML = `<div class="rbox ${cls}">
-      <div class="rbox-eye">minimum average needed from your remaining ~${remCu} CUs</div>
-      <div class="rbox-main">${ptsLbl(reqAvg)} average</div>
-      <div class="rbox-detail">You need ${neededPts.toFixed(1)} grade-points from ${remCu} future CUs to reach ${lbl} (${tgt.toFixed(2)} CGPA). Gap: ${(tgt - cgpa).toFixed(2)} points.</div>
-    </div>`;
+    const cls=reqAvg>=4.5?'bad':reqAvg>=3.5?'warn':'ok';
+    rEl.innerHTML=`<div class="rbox ${cls}"><div class="rbox-eye">minimum average grade needed from ~${remCu} remaining CUs</div><div class="rbox-main">${pLbl(reqAvg)} average · ${reqAvg.toFixed(2)} pts</div><div class="rbox-detail">Need ${neededPts.toFixed(1)} grade-points from ${remCu} future CUs to reach ${lbl} (${tgt.toFixed(2)} CGPA). Currently ${cgpa.toFixed(2)} — gap: ${(tgt-cgpa).toFixed(2)}.</div></div>`;
   }
 
-  const scenarios = [
-    {g:'All A / A+',pts:5.0},{g:'All A-',pts:4.5},{g:'All B+',pts:4.0},
-    {g:'All B',pts:3.5},{g:'All B-',pts:3.0},{g:'All C',pts:2.0}
-  ];
-  function wiCol(g) { return g>=4.5?'#059669':g>=4.0?'#2563eb':g>=3.5?'#d97706':g>=3.0?'#d97706':'#dc2626'; }
-
-  whatifEl.innerHTML = scenarios.map(s => {
-    const proj = remCu > 0 ? (curPts + s.pts * remCu) / totalCu : cgpa;
-    const meets = proj >= tgt;
-    const col = wiCol(proj);
-    const hon = getHon(proj);
-    return `<div class="wi-card">
-      <div class="wi-g" style="color:${col}">${s.g}</div>
-      <div class="wi-cgpa" style="color:${col}">${proj.toFixed(2)}</div>
-      <div class="wi-note" style="color:${meets?'var(--green)':'var(--red)'}">${meets?'✓ '+lbl:'✗ –'+(tgt-proj).toFixed(2)}</div>
-      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:2px">${hon?hon.l:'Pass'}</div>
-    </div>`;
+  const scens=[{g:'All A/A+',pts:5.0},{g:'All A-',pts:4.5},{g:'All B+',pts:4.0},{g:'All B',pts:3.5},{g:'All B-',pts:3.0},{g:'All C',pts:2.0}];
+  wEl.innerHTML=scens.map(sc=>{
+    const proj=remCu>0?(curPts+sc.pts*remCu)/totalCu:cgpa;
+    const meets=proj>=tgt;
+    const c=honCol(proj);
+    return `<div class="wi"><div class="wi-g" style="color:${c}">${sc.g}</div><div class="wi-cgpa" style="color:${c}">${proj.toFixed(2)}</div><div class="wi-note" style="color:${meets?'var(--green)':'var(--red)'}">${meets?'✓ '+lbl:'✗ –'+(tgt-proj).toFixed(2)}</div><div class="wi-hon">${getHon(proj)?.l||'Pass'}</div></div>`;
   }).join('');
 }
 
-/* ════════════════ SCORE CONVERTER ════════════════ */
-function syncScore(src, val) {
-  const n = Math.min(100, Math.max(0, parseInt(val)||0));
-  document.getElementById('sc-slider').value = n;
-  document.getElementById('sc-num').value = n;
-  const g = SCORE_MAP.find(x => n >= x.min) || SCORE_MAP[SCORE_MAP.length-1];
-  const col = GRADE_COL[g.g] || '#555';
-  const hon = getHon(g.pts);
-  document.getElementById('sc-result').innerHTML = `
-    <div class="score-grade" style="color:${col}">${g.g}</div>
-    <div class="score-detail">
-      <div class="sd-pts" style="color:${col}">${g.pts.toFixed(1)} GPA pts</div>
-      <div class="sd-desc">${g.desc}</div>
-      <div class="sd-hon">${hon ? 'Honours territory: ' + hon.l : ''}</div>
-    </div>`;
+/* ════════════════════════════════
+   CONVERTER
+════════════════════════════════ */
+function syncSc(src,val) {
+  const n=Math.min(100,Math.max(0,parseInt(val)||0));
+  document.getElementById('sl').value=n;
+  document.getElementById('sn').value=n;
+  const g=SCORE_SCALE.find(x=>n>=x.min)||SCORE_SCALE[SCORE_SCALE.length-1];
+  const col=GRADE_COL[g.g]||'#555';
+  const hon=getHon(g.pts);
+  document.getElementById('sc-result').innerHTML=`
+    <div class="sc-grade" style="color:${col}">${g.g}</div>
+    <div><div class="sc-pts" style="color:${col}">${g.pts.toFixed(1)} GPA points</div><div class="sc-desc">${g.desc}</div><div class="sc-hon">${hon?'Honours territory: '+hon.l:''}</div></div>`;
 }
 
 function buildScoreTable() {
-  document.getElementById('sc-table').innerHTML = `
+  document.getElementById('sc-table').innerHTML=`
     <thead><tr style="border-bottom:1px solid var(--border2)">
       <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Score</th>
-      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Grade</th>
-      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Points</th>
+      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase">Grade</th>
+      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase">Pts</th>
       <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Description</th>
     </tr></thead>
-    <tbody>${SCORE_MAP.map((g,i) => {
-      const next = SCORE_MAP[i-1];
-      const rng = `${g.min}${next?'–'+next.min:'–100'}`;
-      const css = GRADE_CSS[g.g] || 'g-p';
-      return `<tr style="border-bottom:1px solid var(--border)">
-        <td style="padding:7px 12px;font-family:var(--mono);font-size:12px;color:var(--text2)">${rng}%</td>
-        <td style="padding:7px 12px"><span class="gt ${css}">${g.g}</span></td>
-        <td style="padding:7px 12px;font-family:var(--mono);font-size:13px">${g.pts.toFixed(1)}</td>
-        <td style="padding:7px 12px;font-size:12px;color:var(--text2)">${g.desc}</td>
-      </tr>`;
+    <tbody>${SCORE_SCALE.map((g,i)=>{
+      const prev=SCORE_SCALE[i-1];const rng=`${g.min}${prev?'–'+prev.min:'–100'}%`;
+      return `<tr style="border-bottom:1px solid var(--border)"><td style="padding:7px 12px;font-size:12px;font-family:var(--mono);color:var(--text2)">${rng}</td><td style="padding:7px 12px;text-align:center"><span class="gc ${GRADE_CSS[g.g]||'gc-p'}">${g.g}</span></td><td style="padding:7px 12px;font-family:var(--mono);font-size:13px;text-align:center">${g.pts.toFixed(1)}</td><td style="padding:7px 12px;font-size:12px;color:var(--text2)">${g.desc}</td></tr>`;
     }).join('')}</tbody>`;
 }
 
-/* ════════════════ INIT ════════════════ */
+/* ════════════════════════════════
+   INIT
+════════════════════════════════ */
 load();
-
-if (state.profile) {
-  // Returning user — skip onboarding
-  selectedGoal = state.planTarget || { gpa: 3.5, label: 'Merit' };
+if(S.profile){
+  planTarget=S.planTarget||{gpa:3.5,label:'Merit'};
   launchApp();
-  // Re-sync planner target UI
-  const tgts = [3.0, 3.5, 4.0, 4.5];
-  const idx = tgts.indexOf(selectedGoal.gpa);
-  if (idx >= 0) { document.querySelectorAll('.tc').forEach(c=>c.classList.remove('sel')); document.querySelectorAll('.tc')[idx]?.classList.add('sel'); }
-  planTarget = selectedGoal;
-} else {
-  // New user — show onboarding
 }
 </script>
 </body>
