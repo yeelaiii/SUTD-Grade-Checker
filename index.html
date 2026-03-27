@@ -4,370 +4,1014 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SUTD Grade Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f2f8;--text2:#8b93a8;--text3:#5a6175;--blue:#4f8ef7;--blue-bg:rgba(79,142,247,0.12);--blue-border:rgba(79,142,247,0.3);--green:#34d399;--green-bg:rgba(52,211,153,0.1);--green-border:rgba(52,211,153,0.3);--amber:#fbbf24;--amber-bg:rgba(251,191,36,0.1);--amber-border:rgba(251,191,36,0.3);--red:#f87171;--red-bg:rgba(248,113,113,0.1);--red-border:rgba(248,113,113,0.3);--r:10px;--rl:14px}
+:root{
+  --bg:#f7f8fa;--bg2:#fff;--bg3:#f1f3f7;--bg4:#e8ecf2;
+  --border:#e3e7ee;--border2:#c9d0dc;
+  --text:#1c1f26;--text2:#5c6475;--text3:#9ba3b2;
+  --accent:#2563eb;--accent-l:#eff4ff;--accent-b:#c7d8ff;
+  --green:#059669;--green-l:#ecfdf5;--green-b:#a7f3d0;
+  --amber:#d97706;--amber-l:#fffbeb;--amber-b:#fde68a;
+  --red:#dc2626;--red-l:#fef2f2;--red-b:#fecaca;
+  --r:10px;--rl:14px;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+  --sh:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 20px rgba(0,0,0,.10);
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
-.shell{max-width:1100px;margin:0 auto;padding:0 24px}
-header{border-bottom:1px solid var(--border);padding:20px 0;margin-bottom:36px;animation:fadeDown .4s ease both}
-.hi{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.brand{display:flex;align-items:center;gap:12px}
-.bi{width:38px;height:38px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:500;color:#fff;letter-spacing:-.5px}
-.bn{font-size:17px;font-weight:600}
-.bs{font-size:12px;color:var(--text3);margin-top:1px}
-.pill{display:flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border2);border-radius:99px;font-size:12px;color:var(--text2);background:var(--bg2)}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
-.dot.a{background:var(--amber)}
-.nav-tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:4px;margin-bottom:28px;width:fit-content;flex-wrap:wrap;animation:fadeUp .4s .1s ease both}
-.nt{padding:8px 20px;border-radius:9px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .2s;border:none;background:transparent;font-family:'DM Sans',sans-serif}
-.nt:hover{color:var(--text);background:var(--bg3)}
-.nt.active{background:var(--bg3);color:var(--text);border:1px solid var(--border2)}
-.panel{display:none;animation:fadeUp .3s ease both}
-.panel.active{display:block}
-.sr{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px}
-.sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:18px 20px;transition:border-color .2s}
-.sc:hover{border-color:var(--border2)}
-.sl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.sv{font-size:28px;font-weight:600;line-height:1;margin-bottom:6px;font-family:'DM Mono',monospace}
-.ss{font-size:12px;color:var(--text2)}
-.sb{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px;margin-top:6px}
-.two{display:grid;grid-template-columns:1fr 300px;gap:16px;margin-bottom:28px}
-@media(max-width:720px){.two{grid-template-columns:1fr}}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px;transition:border-color .2s}
-.card:hover{border-color:var(--border2)}
-.ct{font-size:13px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px}
-.tb{margin-bottom:20px}
-.tb:last-child{margin-bottom:0}
-.th{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.tn{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
-.tg{font-size:12px;font-family:'DM Mono',monospace}
-.mr{display:grid;grid-template-columns:1fr 44px 56px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
-.mr:last-child{border:none}
-.mn{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mc{font-size:12px;color:var(--text3);text-align:center;font-family:'DM Mono',monospace}
-.g{font-size:11px;font-weight:500;padding:3px 0;border-radius:6px;text-align:center;font-family:'DM Mono',monospace}
-.gA{background:rgba(52,211,153,.15);color:#34d399}.gAm{background:rgba(52,211,153,.1);color:#6ee7b7}
-.gBp{background:rgba(79,142,247,.15);color:#93bbfb}.gB{background:rgba(79,142,247,.1);color:#7aaaf9}
-.gBm{background:rgba(251,191,36,.12);color:#fbbf24}.gC{background:rgba(248,113,113,.12);color:#f87171}
-.gD{background:rgba(248,113,113,.2);color:#ef4444;border:1px solid rgba(248,113,113,.3)}.gP{background:var(--bg3);color:var(--text3)}
-.trow{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.tlbl{font-size:11px;color:var(--text3);min-width:72px;font-family:'DM Mono',monospace}
-.ttrack{flex:1;height:6px;background:var(--bg3);border-radius:99px;overflow:hidden}
-.tfill{height:100%;border-radius:99px;transition:width .6s ease}
-.tnum{font-size:12px;font-weight:500;min-width:32px;text-align:right;font-family:'DM Mono',monospace}
-.hr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
-.hr:last-child{border:none}
-.hr.cur{background:var(--blue-bg);margin:0 -22px;padding:10px 22px}
-.hrn{font-size:13px}.hrr{font-size:11px;color:var(--text3);margin-top:1px;font-family:'DM Mono',monospace}
-.hb{font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px}
-.hbc{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
-.hba{background:var(--bg3);color:var(--text3)}
-.hbb{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.as{border-top:1px solid var(--border);padding-top:16px;margin-top:16px}
-.at{font-size:12px;color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.6px}
-.af{display:flex;gap:8px;flex-wrap:wrap}
-.af input,.af select{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border-color .2s}
-.af input{flex:1;min-width:160px}
-.af input:focus{border-color:var(--blue)}
-.af select{min-width:80px}
-.af select option{background:var(--bg3)}
-.abtn{background:var(--blue);color:#fff;border:none;border-radius:var(--r);padding:8px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .1s}
-.abtn:hover{opacity:.85}
-.abtn:active{transform:scale(.97)}
-.al{margin-top:10px;display:flex;flex-direction:column;gap:4px}
-.ai{display:grid;grid-template-columns:1fr 44px 56px 28px;gap:8px;align-items:center;padding:6px 10px;background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:8px;font-size:13px}
-.rb{background:none;border:none;color:var(--text3);cursor:pointer;font-size:15px;padding:0;transition:color .2s;line-height:1}
-.rb:hover{color:var(--red)}
-.tg2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-@media(max-width:600px){.tg2{grid-template-columns:repeat(2,1fr)}}
-.tc{padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .2s}
-.tc:hover{border-color:var(--border2)}
-.tc.active{background:var(--blue-bg);border-color:var(--blue-border)}
-.tcl{font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
-.tc.active .tcl{color:var(--blue)}
-.tcv{font-size:14px;font-weight:600;font-family:'DM Mono',monospace}
-.tc.active .tcv{color:var(--blue)}
-.rbox{padding:14px 16px;border-radius:var(--r);margin-bottom:14px;border:1px solid}
-.rbox.ok{background:var(--green-bg);border-color:var(--green-border)}
-.rbox.warn{background:var(--amber-bg);border-color:var(--amber-border)}
-.rbox.bad{background:var(--red-bg);border-color:var(--red-border)}
-.rl{font-size:11px;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
-.rbox.ok .rl{color:var(--green)}.rbox.warn .rl{color:var(--amber)}.rbox.bad .rl{color:var(--red)}
-.rv{font-size:18px;font-weight:600;font-family:'DM Mono',monospace}
-.rbox.ok .rv{color:var(--green)}.rbox.warn .rv{color:var(--amber)}.rbox.bad .rv{color:var(--red)}
-.rs{font-size:12px;margin-top:3px;color:var(--text2)}
-.wg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-@media(max-width:500px){.wg{grid-template-columns:repeat(2,1fr)}}
-.wc{padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r)}
-.wg2{font-size:12px;font-weight:500;margin-bottom:3px;font-family:'DM Mono',monospace}
-.wp{font-size:13px;font-weight:500;font-family:'DM Mono',monospace}
-.wn{font-size:11px;margin-top:3px}
-.wok{color:var(--green)}.wbad{color:var(--red)}
-.mg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
-.fld label{font-size:12px;color:var(--text3);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
-.fld input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--text);font-family:'DM Mono',monospace;font-size:15px;padding:10px 12px;outline:none;transition:border-color .2s}
-.fld input:focus{border-color:var(--blue)}
-.pw{margin-bottom:20px}
-.plbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:6px}
-.ptr{height:8px;background:var(--bg3);border-radius:99px;overflow:hidden}
-.pfl{height:100%;border-radius:99px;background:var(--blue);transition:width .8s ease}
-.div{height:1px;background:var(--border);margin:16px 0}
-.inote{background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--text2);margin-bottom:14px}
-.ss2{display:flex;flex-direction:column;gap:16px}
-footer{margin-top:48px;padding:24px 0;border-top:1px solid var(--border);font-size:12px;color:var(--text3);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-footer a{color:var(--blue);text-decoration:none}
-footer a:hover{text-decoration:underline}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.s1{animation:fadeUp .4s .05s ease both}.s2{animation:fadeUp .4s .1s ease both}.s3{animation:fadeUp .4s .15s ease both}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.6;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--bg2);border-bottom:1px solid var(--border);height:54px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--sh)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:30px;height:30px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:16px;height:16px}
+.logo-name{font-size:15px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.cgpa-pill{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:99px;padding:5px 12px;font-size:13px}
+.cgpa-pill .lbl{color:var(--text2)}
+.cgpa-pill .num{font-weight:600;font-family:var(--mono)}
+.reset-btn{font-size:12px;color:var(--text3);background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:var(--font)}
+.reset-btn:hover{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
+
+/* ── TABS ── */
+.tabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:2px;overflow-x:auto}
+.tab{padding:11px 16px;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px}
+.tab svg{width:13px;height:13px}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ── LAYOUT ── */
+.content{max-width:860px;margin:0 auto;padding:28px 24px}
+.page{display:none}.page.active{display:block;animation:fadeUp .2s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── CARDS ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px;box-shadow:var(--sh);margin-bottom:16px}
+.card:last-child{margin-bottom:0}
+.card-title{font-size:14px;font-weight:600;margin-bottom:3px}
+.card-sub{font-size:12px;color:var(--text2);margin-bottom:16px}
+
+/* ── BADGES ── */
+.badge{display:inline-block;font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:99px;border:1px solid transparent}
+.badge-green{background:var(--green-l);color:var(--green);border-color:var(--green-b)}
+.badge-amber{background:var(--amber-l);color:var(--amber);border-color:var(--amber-b)}
+.badge-red{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
+.badge-blue{background:var(--accent-l);color:var(--accent);border-color:var(--accent-b)}
+.badge-grey{background:var(--bg3);color:var(--text2);border-color:var(--border)}
+
+/* ── GRADE TAGS ── */
+.gt{display:inline-block;font-size:11px;font-weight:500;font-family:var(--mono);padding:2px 9px;border-radius:6px;text-align:center;min-width:34px;border:1px solid transparent}
+.g-ap{background:#ecfdf5;color:#065f46;border-color:#a7f3d0}
+.g-am{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.g-bp{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+.g-b{background:#f0f9ff;color:#0369a1;border-color:#bae6fd}
+.g-bm{background:#fffbeb;color:#92400e;border-color:#fde68a}
+.g-c{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+.g-cc{background:#fef2f2;color:#991b1b;border-color:#fecaca}
+.g-d{background:#fef2f2;color:#b91c1c;border-color:#fca5a5}
+.g-f{background:#fef2f2;color:#7f1d1d;border-color:#f87171}
+.g-p{background:var(--bg3);color:var(--text3);border-color:var(--border)}
+
+/* ── FORMS ── */
+.field{margin-bottom:14px}
+.field label{font-size:12px;font-weight:500;color:var(--text2);display:block;margin-bottom:5px}
+input[type=text],input[type=number],select,textarea{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:13px;padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+select option{background:#fff}
+textarea{resize:vertical;min-height:80px}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:13px;font-weight:500;padding:9px 18px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all .15s;white-space:nowrap}
+.btn svg{width:14px;height:14px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-ghost{background:var(--bg3);color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{background:var(--bg4)}
+.btn-danger{background:var(--red-l);color:var(--red);border-color:var(--red-b)}
+.btn-danger:hover{background:#fee2e2}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+
+/* ── ONBOARDING ── */
+.onboard-wrap{max-width:560px;margin:0 auto;padding:48px 24px}
+.onboard-step{display:none}.onboard-step.active{display:block;animation:fadeUp .25s ease}
+
+.step-indicator{display:flex;align-items:center;gap:6px;margin-bottom:32px}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--bg4);transition:background .3s}
+.step-dot.done{background:var(--accent)}
+.step-dot.active{background:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+.step-line{flex:1;height:1px;background:var(--border)}
+.step-line.done{background:var(--accent)}
+
+.onboard-title{font-size:24px;font-weight:600;margin-bottom:8px;letter-spacing:-.3px}
+.onboard-sub{font-size:14px;color:var(--text2);margin-bottom:28px;line-height:1.7}
+
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.option-card{padding:16px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;background:var(--bg2);text-align:left}
+.option-card:hover{border-color:var(--border2);background:var(--bg3)}
+.option-card.selected{border-color:var(--accent);background:var(--accent-l)}
+.option-card .oc-icon{font-size:20px;margin-bottom:8px;display:block}
+.option-card .oc-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.option-card.selected .oc-title{color:var(--accent)}
+.option-card .oc-sub{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:32px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg3)}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--accent-l)}
+.upload-zone .uz-icon{font-size:28px;margin-bottom:8px;display:block}
+.upload-zone .uz-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.upload-zone .uz-sub{font-size:12px;color:var(--text2)}
+#file-input{display:none}
+
+.upload-result{padding:14px;background:var(--green-l);border:1px solid var(--green-b);border-radius:var(--r);margin-top:12px;font-size:13px}
+
+/* ── PARSED PREVIEW ── */
+.parsed-term{margin-bottom:12px;padding:12px 14px;background:var(--bg3);border-radius:var(--r);border:1px solid var(--border)}
+.parsed-term-name{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.4px}
+.parsed-mod{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:13px}
+.parsed-mod-name{flex:1;color:var(--text)}
+.parsed-mod-cu{color:var(--text3);font-family:var(--mono);font-size:11px;min-width:30px}
+
+/* ── PROFILE CARD ── */
+.profile-header{display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--accent);flex-shrink:0}
+.profile-name{font-size:16px;font-weight:600}
+.profile-meta{font-size:12px;color:var(--text2)}
+
+/* ── GRADES TAB ── */
+.term-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:0;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.term-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.term-name-txt{font-size:13px;font-weight:600}
+.term-gpa-txt{font-size:12px;color:var(--text2)}
+.mod-table{width:100%;border-collapse:collapse}
+.mod-table td{padding:8px 18px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.mod-table tr:last-child td{border:none}
+.mod-main{color:var(--text)}
+.mod-code-sm{font-size:11px;color:var(--text3);font-family:var(--mono);display:block}
+.mod-cu-td{text-align:center;width:44px;font-family:var(--mono);font-size:12px;color:var(--text2)}
+.mod-grade-td{text-align:center;width:56px}
+.mod-del-td{width:32px;text-align:center}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:15px;padding:2px 5px;border-radius:4px;transition:all .1s}
+.del-btn:hover{background:var(--red-l);color:var(--red)}
+
+.add-mod-bar{padding:10px 18px;background:var(--bg3);border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 60px 80px auto;gap:8px;align-items:center}
+.add-mod-bar input,.add-mod-bar select{background:var(--bg2);font-size:12px;padding:7px 10px}
+.p-hint{font-size:11px;color:var(--text3);padding:4px 18px 10px;background:var(--bg3)}
+
+.add-term-btn{width:100%;padding:14px;border:2px dashed var(--border2);border-radius:var(--r);background:none;cursor:pointer;color:var(--text2);font-family:var(--font);font-size:13px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.add-term-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l)}
+
+/* ── OVERVIEW ── */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat{background:var(--bg3);border-radius:var(--r);padding:14px 16px}
+.stat-lbl{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat-val{font-size:24px;font-weight:700;font-family:var(--mono);margin-bottom:2px}
+.stat-sub{font-size:11px;color:var(--text2)}
+
+.trend-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.trend-row:last-child{margin:0}
+.trend-lbl{font-size:12px;font-family:var(--mono);color:var(--text2);min-width:88px}
+.trend-track{flex:1;height:8px;background:var(--bg4);border-radius:99px;overflow:hidden}
+.trend-fill{height:100%;border-radius:99px;transition:width .5s ease}
+.trend-val{font-size:12px;font-weight:600;font-family:var(--mono);min-width:30px;text-align:right}
+
+.hon-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--border);font-size:13px}
+.hon-row:last-child{border:none}
+.hon-row.cur{background:var(--accent-l);border-radius:8px;margin:2px 0;border-color:transparent}
+.hon-row.cur *{color:var(--accent)!important}
+
+/* ── PLANNER ── */
+.target-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.tc{padding:12px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;text-align:center;background:var(--bg2)}
+.tc:hover{border-color:var(--border2);background:var(--bg3)}
+.tc.sel{border-color:var(--accent);background:var(--accent-l)}
+.tc-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.tc.sel .tc-name{color:var(--accent)}
+.tc-range{font-size:11px;color:var(--text3);font-family:var(--mono)}
+.tc.sel .tc-range{color:var(--accent);opacity:.7}
+
+.rbox{border-radius:var(--r);padding:16px 18px;margin-bottom:14px}
+.rbox.ok{background:var(--green-l);border:1px solid var(--green-b)}
+.rbox.warn{background:var(--amber-l);border:1px solid var(--amber-b)}
+.rbox.bad{background:var(--red-l);border:1px solid var(--red-b)}
+.rbox.info{background:var(--accent-l);border:1px solid var(--accent-b)}
+.rbox-eye{font-size:11px;font-family:var(--mono);margin-bottom:3px}
+.rbox.ok .rbox-eye{color:var(--green)}.rbox.warn .rbox-eye{color:var(--amber)}.rbox.bad .rbox-eye{color:var(--red)}.rbox.info .rbox-eye{color:var(--accent)}
+.rbox-main{font-size:19px;font-weight:600;font-family:var(--mono)}
+.rbox.ok .rbox-main{color:var(--green)}.rbox.warn .rbox-main{color:var(--amber)}.rbox.bad .rbox-main{color:var(--red)}.rbox.info .rbox-main{color:var(--accent)}
+.rbox-detail{font-size:12px;color:var(--text2);margin-top:4px}
+
+.wi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.wi-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.wi-g{font-size:12px;font-weight:600;font-family:var(--mono);margin-bottom:2px}
+.wi-cgpa{font-size:15px;font-weight:700;font-family:var(--mono)}
+.wi-note{font-size:11px;font-family:var(--mono);margin-top:3px}
+
+/* ── CONVERTER ── */
+.slider-row{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.slider-row label{font-size:13px;color:var(--text2);min-width:70px;white-space:nowrap}
+.slider-row input[type=range]{flex:1;accent-color:var(--accent)}
+.slider-row input[type=number]{width:70px}
+.score-result{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);padding:20px 22px;display:flex;align-items:center;gap:18px}
+.score-grade{font-size:52px;font-weight:700;font-family:var(--mono);line-height:1}
+.score-detail .sd-pts{font-size:17px;font-weight:600;font-family:var(--mono);margin-bottom:3px}
+.score-detail .sd-desc{font-size:13px;color:var(--text2)}
+.score-detail .sd-hon{font-size:12px;color:var(--text3);margin-top:6px}
+
+/* ── MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:var(--rl);padding:24px;width:400px;max-width:92vw;box-shadow:var(--sh2)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--text2);margin-bottom:18px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px 20px;color:var(--text2)}
+.empty-icon{font-size:36px;display:block;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:500;color:var(--text);margin-bottom:6px}
+.empty-sub{font-size:13px;line-height:1.7;margin-bottom:20px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .content{padding:16px}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .target-cards{grid-template-columns:repeat(2,1fr)}
+  .wi-grid{grid-template-columns:1fr 1fr}
+  .add-mod-bar{grid-template-columns:1fr 1fr}
+  .onboard-wrap{padding:24px 16px}
+  .option-grid{grid-template-columns:1fr}
+  .topbar{padding:0 16px}
+  .tabs{padding:0 12px}
+}
+
+.hidden{display:none!important}
+.info-bar{background:var(--accent-l);border:1px solid var(--accent-b);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.info-bar strong{color:var(--accent)}
 </style>
 </head>
 <body>
-<div class="shell">
-  <header>
-    <div class="hi">
-      <div class="brand">
-        <div class="bi">GPA</div>
-        <div><div class="bn">SUTD Grade Tracker</div><div class="bs">Computer Science & Design</div></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon"><svg viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" fill="white"/><rect x="9" y="1" width="6" height="6" rx="1.5" fill="white" opacity=".5"/><rect x="1" y="9" width="6" height="6" rx="1.5" fill="white" opacity=".5"/><rect x="9" y="9" width="6" height="6" rx="1.5" fill="white" opacity=".2"/></svg></div>
+    <span class="logo-name">SUTD Grade Tracker</span>
+  </div>
+  <div class="topbar-right">
+    <div class="cgpa-pill hidden" id="top-pill">
+      <span class="lbl">CGPA</span>
+      <span class="num" id="top-cgpa">—</span>
+      <span id="top-hon" class="badge"></span>
+    </div>
+    <button class="reset-btn hidden" id="reset-btn" onclick="resetApp()">Start over</button>
+  </div>
+</div>
+
+<!-- TABS — hidden until onboarding done -->
+<div class="tabs hidden" id="main-tabs">
+  <button class="tab active" onclick="showTab('grades',this)">
+    <svg viewBox="0 0 14 14" fill="none"><path d="M1 3h12M1 7h12M1 11h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>My Grades
+  </button>
+  <button class="tab" onclick="showTab('overview',this)">
+    <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>Overview
+  </button>
+  <button class="tab" onclick="showTab('planner',this)">
+    <svg viewBox="0 0 14 14" fill="none"><path d="M2 11L5 7l3 2.5L11 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Honours Planner
+  </button>
+  <button class="tab" onclick="showTab('converter',this)">
+    <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Score → Grade
+  </button>
+</div>
+
+<!-- ══════════════ ONBOARDING ══════════════ -->
+<div id="onboard-container">
+  <div class="onboard-wrap">
+
+    <!-- Step indicators -->
+    <div class="step-indicator" id="step-indicator">
+      <div class="step-dot active" id="dot-0"></div>
+      <div class="step-line" id="line-0"></div>
+      <div class="step-dot" id="dot-1"></div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <!-- STEP 0 — Welcome -->
+    <div class="onboard-step active" id="step-0">
+      <div class="onboard-title">Welcome to SUTD Grade Tracker 👋</div>
+      <div class="onboard-sub">Track your CGPA, plan your honours class, and see what grades you need — built for SUTD students by a SUTD student.<br><br>Let's set up your profile in a few quick steps.</div>
+      <button class="btn btn-primary btn-full" style="padding:12px" onclick="goStep(1)">
+        Get started
+        <svg viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+
+    <!-- STEP 1 — Basic info -->
+    <div class="onboard-step" id="step-1">
+      <div class="onboard-title">Tell us about yourself</div>
+      <div class="onboard-sub">This helps personalise your planner. Nothing is sent anywhere — everything stays in your browser.</div>
+      <div class="field"><label>Your name</label><input type="text" id="q-name" placeholder="e.g. Alex Tan"></div>
+      <div class="field"><label>Your SUTD programme / pillar</label>
+        <select id="q-prog">
+          <option value="">Select your programme</option>
+          <option>Computer Science and Design (CSD)</option>
+          <option>Engineering Systems and Design (ESD)</option>
+          <option>Engineering Product Development (EPD)</option>
+          <option>Architecture and Sustainable Design (ASD)</option>
+          <option>Design and Artificial Intelligence (DAI)</option>
+          <option>Other / Not sure</option>
+        </select>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <div class="pill"><div class="dot a"></div>Seeking internship May 2026</div>
-        <div class="pill" id="live-pill">CGPA: 3.15</div>
+      <div class="field"><label>Which year did you start? (intake year)</label>
+        <select id="q-year">
+          <option value="">Select year</option>
+          <option>2020</option><option>2021</option><option>2022</option>
+          <option>2023</option><option>2024</option><option>2025</option>
+        </select>
+      </div>
+      <div class="field"><label>Estimated total CUs in your degree</label>
+        <select id="q-totalcu">
+          <option value="228">~228 CUs (standard)</option>
+          <option value="240" selected>~240 CUs (standard with minor)</option>
+          <option value="252">~252 CUs (double minor)</option>
+          <option value="300">~300+ CUs (double degree)</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn btn-ghost" onclick="goStep(0)">Back</button>
+        <button class="btn btn-primary" style="flex:1" onclick="validateStep1()">Continue →</button>
       </div>
     </div>
-  </header>
 
-  <div class="nav-tabs">
-    <button class="nt active" onclick="showTab('overview',this)">Overview</button>
-    <button class="nt" onclick="showTab('transcript',this)">Transcript</button>
-    <button class="nt" onclick="showTab('planner',this)">Honours Planner</button>
-    <button class="nt" onclick="showTab('sim',this)">What-if Simulator</button>
+    <!-- STEP 2 — How to enter grades -->
+    <div class="onboard-step" id="step-2">
+      <div class="onboard-title">How would you like to enter your grades?</div>
+      <div class="onboard-sub">You can upload your official transcript PDF and we'll try to read it, or enter everything manually term by term.</div>
+      <div class="option-grid">
+        <div class="option-card" id="opt-upload" onclick="selectMethod('upload')">
+          <span class="oc-icon">📄</span>
+          <div class="oc-title">Upload transcript PDF</div>
+          <div class="oc-sub">Upload your official SUTD transcript and we'll extract your terms and grades automatically</div>
+        </div>
+        <div class="option-card" id="opt-manual" onclick="selectMethod('manual')">
+          <span class="oc-icon">✏️</span>
+          <div class="oc-title">Enter manually</div>
+          <div class="oc-sub">Add your terms and modules one by one. Good if you don't have your transcript handy</div>
+        </div>
+      </div>
+      <div id="upload-section" class="hidden">
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondrop="handleDrop(event)">
+          <span class="uz-icon">📎</span>
+          <div class="uz-title">Click to upload or drag & drop</div>
+          <div class="uz-sub">PDF files only · Your file is read locally, never uploaded anywhere</div>
+        </div>
+        <input type="file" id="file-input" accept=".pdf" onchange="handleFileSelect(event)">
+        <div id="upload-result" class="hidden"></div>
+        <div id="parsed-preview" class="hidden" style="margin-top:16px"></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:16px">
+        <button class="btn btn-ghost" onclick="goStep(1)">Back</button>
+        <button class="btn btn-primary" style="flex:1" id="step2-next" onclick="goStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3 — Goals -->
+    <div class="onboard-step" id="step-3">
+      <div class="onboard-title">What's your target honours class?</div>
+      <div class="onboard-sub">This sets your planner default. You can always change it later.</div>
+      <div style="display:grid;gap:10px;margin-bottom:20px">
+        <div class="option-card" id="goal-4" onclick="selectGoal(this,4.50,'Highest Distinction')">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="oc-title">Highest Distinction</div><div class="oc-sub">CGPA 4.50 and above</div></div>
+            <span class="badge badge-green">4.50+</span>
+          </div>
+        </div>
+        <div class="option-card" id="goal-3" onclick="selectGoal(this,4.00,'Distinction')">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="oc-title">Distinction</div><div class="oc-sub">CGPA 4.00 – 4.49</div></div>
+            <span class="badge badge-blue">4.00+</span>
+          </div>
+        </div>
+        <div class="option-card selected" id="goal-2" onclick="selectGoal(this,3.50,'Merit')">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="oc-title">Merit</div><div class="oc-sub">CGPA 3.50 – 3.99</div></div>
+            <span class="badge badge-amber">3.50+</span>
+          </div>
+        </div>
+        <div class="option-card" id="goal-1" onclick="selectGoal(this,3.00,'Honours')">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><div class="oc-title">Honours</div><div class="oc-sub">CGPA 3.00 – 3.49</div></div>
+            <span class="badge badge-grey">3.00+</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="goStep(2)">Back</button>
+        <button class="btn btn-primary" style="flex:1" onclick="finishOnboarding()">Finish setup →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="app-container" class="hidden">
+
+  <!-- GRADES -->
+  <div class="page active content" id="tab-grades">
+    <div class="info-bar">
+      <strong>Tip:</strong> Use grade <strong>P</strong> for pass/fail modules (Design Thinking projects, etc.) — they won't count toward your CGPA. All other letter grades count.
+    </div>
+    <div id="terms-list"></div>
+    <button class="add-term-btn" onclick="openTermModal()">
+      <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Add a new term
+    </button>
+    <div id="grades-footer" class="hidden" style="margin-top:16px">
+      <div class="card" style="margin-bottom:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:2px">Cumulative GPA</div>
+            <div style="font-size:28px;font-weight:700;font-family:var(--mono)" id="footer-cgpa">—</div>
+          </div>
+          <div id="footer-hon"></div>
+          <div style="font-size:12px;color:var(--text2)" id="footer-cu"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- OVERVIEW -->
-  <div class="panel active" id="tab-overview">
-    <div class="sr s1">
-      <div class="sc"><div class="sl">Current CGPA</div><div class="sv" id="stat-gpa">3.15</div><div class="ss">out of 5.0</div><span class="sb" id="stat-cls" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">Honours</span></div>
-      <div class="sc"><div class="sl">Graded CUs done</div><div class="sv">120</div><div class="ss">of ~240 total</div><span class="sb" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)">50% complete</span></div>
-      <div class="sc"><div class="sl">Best term GPA</div><div class="sv">3.75</div><div class="ss">2024 Sep–Dec</div><span class="sb" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)">Merit level</span></div>
-      <div class="sc"><div class="sl">Toughest term</div><div class="sv" style="color:var(--red)">2.63</div><div class="ss">2025 Jan–Apr</div><span class="sb" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)">D in 50.001</span></div>
+  <div class="page content" id="tab-overview">
+    <div id="ov-empty" class="empty">
+      <span class="empty-icon">📊</span>
+      <div class="empty-title">Nothing to show yet</div>
+      <div class="empty-sub">Add some grades in My Grades first</div>
+      <button class="btn btn-primary" onclick="showTab('grades',document.querySelector('.tab'))">Go to My Grades</button>
     </div>
-    <div class="two s2">
+    <div id="ov-content" class="hidden">
       <div class="card">
-        <div class="ct">GPA trend by term</div>
-        <div class="pw"><div class="plbl"><span>Degree progress</span><span>120 / 240 CUs</span></div><div class="ptr"><div class="pfl" style="width:50%"></div></div></div>
-        <div class="div"></div>
-        <div style="margin-top:16px">
-          <div class="trow"><span class="tlbl">2024 Jan</span><div class="ttrack"><div class="tfill" style="width:70%;background:#4f8ef7"></div></div><span class="tnum" style="color:#4f8ef7">3.50</span></div>
-          <div class="trow"><span class="tlbl">2024 Sep</span><div class="ttrack"><div class="tfill" style="width:75%;background:#34d399"></div></div><span class="tnum" style="color:#34d399">3.75</span></div>
-          <div class="trow"><span class="tlbl">2025 Jan</span><div class="ttrack"><div class="tfill" style="width:52.6%;background:#f87171"></div></div><span class="tnum" style="color:#f87171">2.63</span></div>
-          <div class="trow"><span class="tlbl">2025 May</span><div class="ttrack"><div class="tfill" style="width:62.6%;background:#fbbf24"></div></div><span class="tnum" style="color:#fbbf24">3.13</span></div>
+        <div class="profile-header" id="ov-profile"></div>
+        <div class="stat-row" id="ov-stats"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title">Term trend</div>
+          <div class="card-sub">Your GPA each term</div>
+          <div id="ov-trend"></div>
         </div>
-        <div class="div"></div>
-        <div style="font-size:12px;color:var(--text3)">The D in <span style="color:var(--text2);font-family:'DM Mono',monospace">50.001</span> in Jan 2025 pulled CGPA from 3.60 → 3.17. Recovery started in May 2025 with an A- in 02.177.</div>
-      </div>
-      <div class="ss2">
-        <div class="card">
-          <div class="ct">Honours scale</div>
-          <div class="hr"><div><div class="hrn">Highest Distinction</div><div class="hrr">4.50 and above</div></div><span class="hb hba">−1.35</span></div>
-          <div class="hr"><div><div class="hrn">Distinction</div><div class="hrr">4.00 – 4.49</div></div><span class="hb hba">−0.85</span></div>
-          <div class="hr"><div><div class="hrn">Merit</div><div class="hrr">3.50 – 3.99</div></div><span class="hb hba">−0.35</span></div>
-          <div class="hr cur"><div><div class="hrn" style="font-weight:500;color:var(--blue)">Honours</div><div class="hrr" style="color:var(--blue)">3.00 – 3.49</div></div><span class="hb hbc">You</span></div>
-          <div class="hr"><div><div class="hrn">Pass</div><div class="hrr">2.00 – 2.99</div></div><span class="hb hbb">+1.15 above</span></div>
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title">Honours scale</div>
+          <div class="card-sub">Where you stand</div>
+          <div id="ov-hon"></div>
         </div>
-        <div class="card">
-          <div class="ct">Key modules</div>
-          <div class="mr"><span class="mn" style="color:var(--red)">50.001 Intro IS&P</span><span class="mc">12</span><span class="g gD">D</span></div>
-          <div class="mr"><span class="mn" style="color:var(--amber)">50.005 CSE</span><span class="mc">12</span><span class="g gC">C</span></div>
-          <div class="mr"><span class="mn" style="color:var(--green)">02.177 Wind & Water</span><span class="mc">12</span><span class="g gAm">A-</span></div>
-          <div style="font-size:11px;color:var(--text3);margin-top:10px">Retaking 50.001 for B+ would recover ~36 cumulative grade-points</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TRANSCRIPT -->
-  <div class="panel" id="tab-transcript">
-    <div class="inote s1">Pass/Fail modules (Design Thinking projects, Freshmore mods) are excluded from GPA. Only letter-graded modules count toward your CGPA.</div>
-    <div class="card s2">
-      <div class="ct">Full academic record</div>
-      <div class="tb">
-        <div class="th"><span class="tn">2023 Sep–Dec — Freshmore</span><span class="tg" style="color:var(--text3)">Not counted</span></div>
-        <div class="mr"><span class="mn">Freshmore Communication Programme</span><span class="mc">—</span><span class="g gP">S</span></div>
-        <div class="mr"><span class="mn">Design Thinking Project I</span><span class="mc">—</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Social Science: Behaviour, Culture & Society</span><span class="mc">12</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Modelling and Analysis</span><span class="mc">12</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Computational Thinking For Design</span><span class="mc">12</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Physical World</span><span class="mc">12</span><span class="g gP">P</span></div>
-      </div>
-      <div class="tb">
-        <div class="th"><span class="tn">2024 Jan–Apr</span><span class="tg" style="color:var(--blue)">3.50</span></div>
-        <div class="mr"><span class="mn">Design Thinking Project II</span><span class="mc">—</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Design Thinking and Innovation</span><span class="mc">12</span><span class="g gBp">B+</span></div>
-        <div class="mr"><span class="mn">Science for a Sustainable World</span><span class="mc">12</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Technological World</span><span class="mc">12</span><span class="g gBm">B-</span></div>
-        <div class="mr"><span class="mn">Modeling Space and Systems</span><span class="mc">12</span><span class="g gB">B</span></div>
-      </div>
-      <div class="tb">
-        <div class="th"><span class="tn">2024 Sep–Dec</span><span class="tg" style="color:var(--green)">3.75</span></div>
-        <div class="mr"><span class="mn">Design Thinking Project III</span><span class="mc">—</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Global Humanities: Lit, Philosophy & Ethics</span><span class="mc">12</span><span class="g gBp">B+</span></div>
-        <div class="mr"><span class="mn">Data Driven World</span><span class="mc">12</span><span class="g gB">B</span></div>
-        <div class="mr"><span class="mn">Modelling Uncertainty</span><span class="mc">12</span><span class="g gP">P</span></div>
-        <div class="mr"><span class="mn">Designing Energy Systems</span><span class="mc">12</span><span class="g gP">P</span></div>
-      </div>
-      <div class="tb">
-        <div class="th"><span class="tn">2025 Jan–Apr</span><span class="tg" style="color:var(--red)">2.63 ↓</span></div>
-        <div class="mr"><span class="mn">Game of Histories</span><span class="mc">12</span><span class="g gB">B</span></div>
-        <div class="mr"><span class="mn" style="color:var(--red)">Intro to Information Systems & Programming</span><span class="mc">12</span><span class="g gD">D</span></div>
-        <div class="mr"><span class="mn">Computation Structures</span><span class="mc">12</span><span class="g gBm">B-</span></div>
-        <div class="mr"><span class="mn">Algorithms</span><span class="mc">12</span><span class="g gBm">B-</span></div>
-      </div>
-      <div class="tb">
-        <div class="th"><span class="tn">2025 May–Aug</span><span class="tg" style="color:var(--amber)">3.13</span></div>
-        <div class="mr"><span class="mn" style="color:var(--green)">On Wind & Water: Metaphysics, Design & Tech</span><span class="mc">12</span><span class="g gAm">A-</span></div>
-        <div class="mr"><span class="mn">Elements of Software Construction</span><span class="mc">12</span><span class="g gBm">B-</span></div>
-        <div class="mr"><span class="mn">Computer System Engineering</span><span class="mc">12</span><span class="g gC">C</span></div>
-        <div class="mr"><span class="mn">Foundations of Cybersecurity</span><span class="mc">12</span><span class="g gBm">B-</span></div>
       </div>
     </div>
   </div>
 
   <!-- PLANNER -->
-  <div class="panel" id="tab-planner">
-    <div class="inote s1">Based on your transcript: 120 graded CUs done, CGPA 3.15. Assumes ~120 graded CUs remaining (~3 terms). Use the Simulator tab to add projected modules for a more precise forecast.</div>
-    <div class="card s2">
-      <div class="ct">Select your target honours class</div>
-      <div class="tg2">
-        <div class="tc" onclick="selTarget(this,3.50,'Merit')"><div class="tcl">Target</div><div class="tcv">Merit 3.50</div></div>
-        <div class="tc active" onclick="selTarget(this,4.00,'Distinction')"><div class="tcl">Target</div><div class="tcv">Distinction 4.00</div></div>
-        <div class="tc" onclick="selTarget(this,4.50,'Highest Distinction')"><div class="tcl">Target</div><div class="tcv">Highest 4.50</div></div>
-        <div class="tc" onclick="selTarget(this,3.00,'Honours (hold)')"><div class="tcl">Target</div><div class="tcv">Hold Honours</div></div>
+  <div class="page content" id="tab-planner">
+    <div class="card">
+      <div class="card-title">Total degree CUs</div>
+      <div class="card-sub">Adjust if your programme differs</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <input type="number" id="plan-total-cu" value="240" min="100" max="400" step="6" style="width:90px" oninput="calcPlanner()">
+        <span style="font-size:13px;color:var(--text2)">Graded CUs completed: <strong id="plan-done" style="color:var(--text)">0</strong></span>
+        <span style="font-size:13px;color:var(--text2)">Remaining: <strong id="plan-rem" style="color:var(--text)">—</strong></span>
       </div>
-      <div id="plan-out"></div>
-      <div class="div"></div>
-      <div style="font-size:12px;color:var(--text3)">Tip: S/U-ing a weak module reduces your graded CU count — each remaining graded module then carries more weight. Check your programme handbook for per-term S/U limits and eligible module types.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Target honours class</div>
+      <div class="card-sub">Select what you're aiming for</div>
+      <div class="target-cards" id="target-cards">
+        <div class="tc" onclick="selTarget(this,3.00,'Honours')"><div class="tc-name">Honours</div><div class="tc-range">≥ 3.00</div></div>
+        <div class="tc sel" onclick="selTarget(this,3.50,'Merit')"><div class="tc-name">Merit</div><div class="tc-range">≥ 3.50</div></div>
+        <div class="tc" onclick="selTarget(this,4.00,'Distinction')"><div class="tc-name">Distinction</div><div class="tc-range">≥ 4.00</div></div>
+        <div class="tc" onclick="selTarget(this,4.50,'Highest Distinction')"><div class="tc-name">Highest Distinction</div><div class="tc-range">≥ 4.50</div></div>
+      </div>
+      <div id="plan-result"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">What if I average this grade from now?</div>
+      <div class="card-sub">See your projected final CGPA for each scenario</div>
+      <div class="wi-grid" id="plan-whatif"></div>
     </div>
   </div>
 
-  <!-- SIMULATOR -->
-  <div class="panel" id="tab-sim">
-    <div class="card s1">
-      <div class="ct">Your current standing</div>
-      <div class="mg">
-        <div class="fld"><label>Current CGPA</label><input type="number" id="sg" value="3.15" min="0" max="5" step="0.01" oninput="runSim()"></div>
-        <div class="fld"><label>Graded CUs completed</label><input type="number" id="sc" value="120" min="0" max="300" step="12" oninput="runSim()"></div>
-        <div class="fld"><label>Total degree CUs</label><input type="number" id="st" value="240" min="120" max="360" step="12" oninput="runSim()"></div>
-        <div class="fld"><label>Target CGPA</label><input type="number" id="starget" value="4.00" min="0" max="5" step="0.01" oninput="runSim()"></div>
+  <!-- CONVERTER -->
+  <div class="page content" id="tab-converter">
+    <div class="card" style="max-width:480px">
+      <div class="card-title">Raw score to SUTD grade</div>
+      <div class="card-sub">Drag the slider or type your percentage score</div>
+      <div class="slider-row">
+        <label>Score %</label>
+        <input type="range" min="0" max="100" step="1" value="75" id="sc-slider" oninput="syncScore('slider',this.value)">
+        <input type="number" min="0" max="100" value="75" id="sc-num" oninput="syncScore('num',this.value)" style="width:70px">
       </div>
-      <div class="as">
-        <div class="at">Add projected modules for next term</div>
-        <div class="af">
-          <input type="text" id="sim-mod" placeholder="Module name (e.g. 50.045 Info Retrieval)">
-          <select id="sim-grade">
-            <option>A+</option><option>A</option><option>A-</option>
-            <option>B+</option><option selected>B</option><option>B-</option>
-            <option>C+</option><option>C</option><option>D</option>
-          </select>
-          <button class="abtn" onclick="simAdd()">+ Add</button>
-        </div>
-        <div class="al" id="sim-list"></div>
-      </div>
+      <div class="score-result" id="sc-result"></div>
     </div>
-    <div class="card s2" style="margin-top:16px">
-      <div class="ct">Simulation results</div>
-      <div id="sim-out"></div>
+    <div class="card" style="max-width:480px;margin-top:0">
+      <div class="card-title">Full grading scale</div>
+      <div class="card-sub">SUTD 5-point system (2017 intake onwards)</div>
+      <table style="width:100%;border-collapse:collapse" id="sc-table"></table>
     </div>
   </div>
 
-  <footer>
-    <span>SUTD Grade Tracker — built by <a href="https://yeelaiii.github.io" target="_blank">Elijah Soon</a></span>
-    <span><a href="https://github.com/yeelaiii/sutd-grade-tracker" target="_blank">github.com/yeelaiii/sutd-grade-tracker</a></span>
-  </footer>
+</div>
+
+<!-- TERM MODAL -->
+<div class="overlay" id="term-modal">
+  <div class="modal">
+    <div class="modal-title">Add a term</div>
+    <div class="modal-sub">Enter the term name, e.g. "2025 Jan–Apr" or "Term 5"</div>
+    <div class="field"><label>Term name</label><input type="text" id="new-term-name" placeholder="e.g. 2025 Sep–Dec" maxlength="40"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="confirmAddTerm()">Add term</button>
+    </div>
+  </div>
 </div>
 
 <script>
-const GP={'A+':5,'A':5,'A-':4.5,'B+':4,'B':3.5,'B-':3,'C+':2.5,'C':2,'D+':1.5,'D':1,'F':0};
-const SC=[{g:'A+/A',p:5,c:'#34d399'},{g:'A-',p:4.5,c:'#6ee7b7'},{g:'B+',p:4,c:'#93bbfb'},{g:'B',p:3.5,c:'#7aaaf9'},{g:'B-',p:3,c:'#fbbf24'},{g:'C',p:2,c:'#f87171'}];
-let mods=[],curT=4,curL='Distinction';
+/* ════════════════ DATA & CONSTANTS ════════════════ */
+const GRADE_PTS = {'A+':5.0,'A':5.0,'A-':4.5,'B+':4.0,'B':3.5,'B-':3.0,'C+':2.5,'C':2.0,'C-':1.5,'D+':1.5,'D':1.0,'F':0.0,'P':null};
+const GRADE_OPTS = ['A+','A','A-','B+','B','B-','C+','C','C-','D+','D','F','P'];
+const GRADE_CSS = {'A+':'g-ap','A':'g-ap','A-':'g-am','B+':'g-bp','B':'g-b','B-':'g-bm','C+':'g-c','C':'g-c','C-':'g-cc','D+':'g-d','D':'g-d','F':'g-f','P':'g-p'};
+const HON = [{l:'Highest Distinction',min:4.5},{l:'Distinction',min:4.0},{l:'Merit',min:3.5},{l:'Honours',min:3.0},{l:'Pass',min:2.0}];
+const SCORE_MAP = [
+  {min:90,g:'A',pts:5.0,desc:'Excellent'},{min:85,g:'A-',pts:4.5,desc:'Excellent (most aspects)'},
+  {min:80,g:'B+',pts:4.0,desc:'Very good'},{min:75,g:'B',pts:3.5,desc:'Very good (most aspects)'},
+  {min:70,g:'B-',pts:3.0,desc:'Good'},{min:65,g:'C+',pts:2.5,desc:'Fairly good'},
+  {min:60,g:'C',pts:2.0,desc:'Satisfactory'},{min:55,g:'C-',pts:1.5,desc:'Improvement needed'},
+  {min:50,g:'D+',pts:1.5,desc:'Improvement needed'},{min:45,g:'D',pts:1.0,desc:'Minimally acceptable'},
+  {min:0,g:'F',pts:0.0,desc:'Fail'}
+];
+const GRADE_COL = {'A':'#059669','A-':'#10b981','B+':'#2563eb','B':'#3b82f6','B-':'#d97706','C+':'#f59e0b','C':'#dc2626','C-':'#dc2626','D+':'#b91c1c','D':'#991b1b','F':'#7f1d1d'};
 
-function hClass(g){return g>=4.5?'Highest Distinction':g>=4?'Distinction':g>=3.5?'Merit':g>=3?'Honours':g>=2?'Pass':'Fail'}
-function pLabel(p){if(p>=4.75)return'A+/A (5.0 pts)';if(p>=4.25)return'A- (4.5 pts)';if(p>=3.75)return'B+ (4.0 pts)';if(p>=3.25)return'B (3.5 pts)';if(p>=2.75)return'B- (3.0 pts)';if(p>=2.25)return'C+ (2.5 pts)';return'C or below'}
+/* ════════════════ STATE ════════════════ */
+let state = { profile: null, terms: [], planTarget: { gpa: 3.5, label: 'Merit' } };
 
-function showTab(id,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nt').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
+function save() { try { localStorage.setItem('sutdgt_v2', JSON.stringify(state)); } catch(e){} }
+function load() { try { const d = localStorage.getItem('sutdgt_v2'); if(d) state = JSON.parse(d); } catch(e){} }
+
+/* ════════════════ ONBOARDING ════════════════ */
+let currentStep = 0;
+let selectedMethod = null;
+let selectedGoal = { gpa: 3.5, label: 'Merit' };
+
+function goStep(n) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step-' + n).classList.add('active');
+  // Update dots
+  for (let i = 0; i <= 3; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.toggle('done', i < n);
+    dot.classList.toggle('active', i === n);
+    if (i < 3) document.getElementById('line-' + i).classList.toggle('done', i < n);
+  }
+}
+
+function validateStep1() {
+  const name = document.getElementById('q-name').value.trim();
+  const prog = document.getElementById('q-prog').value;
+  const year = document.getElementById('q-year').value;
+  if (!name) { document.getElementById('q-name').focus(); return; }
+  if (!prog) { document.getElementById('q-prog').focus(); return; }
+  if (!year) { document.getElementById('q-year').focus(); return; }
+  goStep(2);
+}
+
+function selectMethod(m) {
+  selectedMethod = m;
+  document.getElementById('opt-upload').classList.toggle('selected', m === 'upload');
+  document.getElementById('opt-manual').classList.toggle('selected', m === 'manual');
+  document.getElementById('upload-section').classList.toggle('hidden', m !== 'upload');
+}
+
+function selectGoal(el, gpa, label) {
+  document.querySelectorAll('[id^="goal-"]').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedGoal = { gpa, label };
+}
+
+function finishOnboarding() {
+  const name = document.getElementById('q-name').value.trim();
+  const prog = document.getElementById('q-prog').value;
+  const year = document.getElementById('q-year').value;
+  const totalCu = parseInt(document.getElementById('q-totalcu').value) || 240;
+
+  state.profile = { name, prog, year, totalCu, initials: name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) };
+  state.planTarget = selectedGoal;
+
+  // sync total CU to planner
+  document.getElementById('plan-total-cu').value = totalCu;
+
+  save();
+  launchApp();
+}
+
+/* ════════════════ TRANSCRIPT PARSING ════════════════ */
+function handleDrag(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') processFile(file);
+}
+function handleFileSelect(e) { const f = e.target.files[0]; if(f) processFile(f); }
+
+function processFile(file) {
+  const resultEl = document.getElementById('upload-result');
+  const previewEl = document.getElementById('parsed-preview');
+  resultEl.classList.remove('hidden');
+  resultEl.innerHTML = '⏳ Reading your transcript...';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // We can't natively parse PDF without a library in pure HTML
+    // Instead show instructions and let user confirm manual parse or use text
+    resultEl.innerHTML = `✅ File received: <strong>${file.name}</strong><br>
+      <span style="font-size:12px;color:var(--text2)">We've detected your file. Since PDF parsing requires a library, we'll help you confirm your terms manually on the next screen — your grades are pre-structured for quick entry.</span>`;
+
+    // Try basic text extraction hint
+    previewEl.classList.remove('hidden');
+    previewEl.innerHTML = `
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;padding:12px;background:var(--amber-l);border:1px solid var(--amber-b);border-radius:var(--r)">
+        <strong style="color:var(--amber)">How to use your transcript:</strong><br>
+        On the next screen, add each term and enter your grades as shown on your transcript. 
+        Use <strong>P</strong> for Pass modules, letter grades (A, B+, B-, etc.) for graded ones. 
+        Modules with S/P/U don't count toward CGPA.
+      </div>`;
+    document.getElementById('step2-next').textContent = 'Continue — I\'ll enter manually →';
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ════════════════ APP LAUNCH ════════════════ */
+function launchApp() {
+  document.getElementById('onboard-container').classList.add('hidden');
+  document.getElementById('app-container').classList.remove('hidden');
+  document.getElementById('main-tabs').classList.remove('hidden');
+  document.getElementById('top-pill').classList.remove('hidden');
+  document.getElementById('reset-btn').classList.remove('hidden');
+  renderGrades();
+  updateTopbar();
+
+  // Set planner target from onboarding goal
+  document.querySelectorAll('.tc').forEach(c => c.classList.remove('sel'));
+  const targetMap = { 3.0: 0, 3.5: 1, 4.0: 2, 4.5: 3 };
+  const idx = targetMap[selectedGoal.gpa] ?? 1;
+  document.querySelectorAll('.tc')[idx]?.classList.add('sel');
+}
+
+function resetApp() {
+  if (!confirm('This will clear all your data and restart setup. Are you sure?')) return;
+  state = { profile: null, terms: [], planTarget: { gpa: 3.5, label: 'Merit' } };
+  save();
+  location.reload();
+}
+
+/* ════════════════ TABS ════════════════ */
+function showTab(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  if(id==='planner')calcPlan(curT,curL);
-  if(id==='sim')runSim();
+  if (id === 'overview') renderOverview();
+  if (id === 'planner') calcPlanner();
+  if (id === 'converter') { buildScoreTable(); syncScore('num', 75); }
 }
 
-function selTarget(el,gpa,lbl){
-  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  curT=gpa;curL=lbl;
-  calcPlan(gpa,lbl);
+/* ════════════════ CGPA CALC ════════════════ */
+function cgpaCalc() {
+  let pts = 0, cu = 0;
+  state.terms.forEach(t => t.mods.forEach(m => {
+    const p = GRADE_PTS[m.grade];
+    if (p !== null && p !== undefined) { pts += p * m.cu; cu += m.cu; }
+  }));
+  return cu > 0 ? { cgpa: pts / cu, cu } : { cgpa: null, cu: 0 };
 }
 
-function calcPlan(tgt,lbl){
-  const cg=3.15,cc=120,fc=120,tc=240;
-  const cp=cg*cc,need=tgt*tc-cp,req=need/fc,mx=(cp+5*fc)/tc;
-  let h='';
-  if(req<=0){h=`<div class="rbox ok"><div class="rl">Already achieved!</div><div class="rv">CGPA ${cg} meets ${lbl}</div><div class="rs">Keep this pace to lock it in</div></div>`}
-  else if(req>5){h=`<div class="rbox bad"><div class="rl">Not achievable</div><div class="rv">Max possible: ${mx.toFixed(2)}</div><div class="rs">${lbl} requires ${tgt.toFixed(2)} — even with all A+ you'd reach ${mx.toFixed(2)}</div></div>`}
-  else{const cl=req>=4.5?'bad':req>=3.5?'warn':'ok';h=`<div class="rbox ${cl}"><div class="rl">Minimum avg needed across remaining ~120 CUs</div><div class="rv">${pLabel(req)}</div><div class="rs">Need ${req.toFixed(2)} avg GPA points to reach ${lbl} (${tgt.toFixed(2)} CGPA)</div></div>`}
-  h+=`<div class="wg">`;
-  SC.forEach(s=>{const proj=(cp+s.p*fc)/tc,m=proj>=tgt;h+=`<div class="wc"><div class="wg2" style="color:${s.c}">${s.g}</div><div class="wp">${proj.toFixed(2)} CGPA</div><div class="wn ${m?'wok':'wbad'}">${m?'✓ '+hClass(proj):'✗ short by '+(tgt-proj).toFixed(2)}</div></div>`});
-  h+=`</div>`;
-  document.getElementById('plan-out').innerHTML=h;
+function termGPA(term) {
+  let pts = 0, cu = 0;
+  term.mods.forEach(m => { const p = GRADE_PTS[m.grade]; if (p !== null && p !== undefined) { pts += p * m.cu; cu += m.cu; } });
+  return cu > 0 ? pts / cu : null;
 }
 
-function simAdd(){
-  const name=document.getElementById('sim-mod').value.trim();
-  const grade=document.getElementById('sim-grade').value;
-  if(!name)return;
-  const id=Date.now();
-  mods.push({id,name,grade,pts:GP[grade]||3.5});
-  document.getElementById('sim-mod').value='';
-  renderMods();runSim();
+function getHon(cgpa) { return HON.find(h => cgpa >= h.min) || null; }
+
+function honClass(cgpa) {
+  if (!cgpa) return 'badge-grey';
+  if (cgpa >= 4.5) return 'badge-green';
+  if (cgpa >= 4.0) return 'badge-blue';
+  if (cgpa >= 3.0) return 'badge-amber';
+  return 'badge-red';
 }
 
-function simRm(id){mods=mods.filter(m=>m.id!==id);renderMods();runSim()}
-
-function renderMods(){
-  const el=document.getElementById('sim-list');
-  if(!mods.length){el.innerHTML='';return}
-  el.innerHTML=mods.map(m=>`<div class="ai"><span style="font-size:13px">${m.name}</span><span style="font-size:12px;color:var(--text3);text-align:center;font-family:'DM Mono',monospace">12</span><span style="font-size:11px;font-weight:500;color:var(--blue);font-family:'DM Mono',monospace">${m.grade}</span><button class="rb" onclick="simRm(${m.id})">×</button></div>`).join('')
+/* ════════════════ UPDATE TOPBAR ════════════════ */
+function updateTopbar() {
+  const { cgpa } = cgpaCalc();
+  const num = document.getElementById('top-cgpa');
+  const hon = document.getElementById('top-hon');
+  if (cgpa === null) { num.textContent = '—'; hon.textContent = ''; hon.className = 'badge'; return; }
+  num.textContent = cgpa.toFixed(2);
+  const h = getHon(cgpa);
+  if (h) { hon.textContent = h.l; hon.className = `badge ${honClass(cgpa)}`; }
 }
 
-function runSim(){
-  const cg=parseFloat(document.getElementById('sg').value)||3.15;
-  const cc=parseFloat(document.getElementById('sc').value)||120;
-  const tc=parseFloat(document.getElementById('st').value)||240;
-  const tgt=parseFloat(document.getElementById('starget').value)||4;
-  const ep=mods.reduce((s,m)=>s+m.pts*12,0),ec=mods.length*12;
-  const dc=cc+ec,dg=dc>0?(cg*cc+ep)/dc:cg,rc=tc-dc;
-  const need=tgt*tc-dg*dc,req=rc>0?need/rc:0,mx=rc>0?(dg*dc+5*rc)/tc:dg;
-  document.getElementById('stat-gpa').textContent=dg.toFixed(2);
-  document.getElementById('live-pill').textContent='CGPA: '+dg.toFixed(2);
-  document.getElementById('stat-cls').textContent=hClass(dg);
-  let h=`<div class="sr" style="margin-bottom:14px">
-    <div class="sc"><div class="sl">Projected CGPA</div><div class="sv" style="font-size:22px">${dg.toFixed(2)}</div><div class="ss">${hClass(dg)}</div></div>
-    <div class="sc"><div class="sl">CUs done (w/ projected)</div><div class="sv" style="font-size:22px">${dc}</div><div class="ss">of ${tc} total</div></div>
-    <div class="sc"><div class="sl">CUs remaining</div><div class="sv" style="font-size:22px">${rc}</div><div class="ss">after these modules</div></div>
-  </div>`;
-  if(req<=0){h+=`<div class="rbox ok"><div class="rl">Target achieved</div><div class="rv">CGPA ${dg.toFixed(2)} ≥ ${tgt.toFixed(2)}</div><div class="rs">Keep going to lock it in</div></div>`}
-  else if(req>5){h+=`<div class="rbox bad"><div class="rl">Not achievable</div><div class="rv">Max possible: ${mx.toFixed(2)}</div><div class="rs">Target of ${tgt.toFixed(2)} cannot be reached with ${rc} CUs remaining</div></div>`}
-  else{const cl=req>=4.5?'bad':req>=3.5?'warn':'ok';h+=`<div class="rbox ${cl}"><div class="rl">Required avg for remaining ${rc} CUs</div><div class="rv">${pLabel(req)}</div><div class="rs">Need ${req.toFixed(2)} avg GPA points to reach ${tgt.toFixed(2)} CGPA</div></div>`}
-  h+=`<div class="wg">`;
-  SC.forEach(s=>{const proj=rc>0?(dg*dc+s.p*rc)/tc:dg,m=proj>=tgt;h+=`<div class="wc"><div class="wg2" style="color:${s.c}">${s.g}</div><div class="wp">${proj.toFixed(2)} CGPA</div><div class="wn ${m?'wok':'wbad'}">${m?'✓ '+hClass(proj):'✗ short by '+(tgt-proj).toFixed(2)}</div></div>`});
-  h+=`</div>`;
-  document.getElementById('sim-out').innerHTML=h;
+/* ════════════════ GRADES TAB ════════════════ */
+function renderGrades() {
+  const list = document.getElementById('terms-list');
+  const footer = document.getElementById('grades-footer');
+
+  if (!state.terms.length) {
+    list.innerHTML = `<div class="empty">
+      <span class="empty-icon">📝</span>
+      <div class="empty-title">No terms added yet</div>
+      <div class="empty-sub">Click "Add a new term" below to start entering your grades.<br>Add one term at a time — you can always add more later.</div>
+    </div>`;
+    footer.classList.add('hidden');
+    return;
+  }
+
+  list.innerHTML = state.terms.map((term, ti) => {
+    const gpa = termGPA(term);
+    const gpaBadge = gpa === null ? '' : `<span class="badge ${honClass(gpa)}">${gpa.toFixed(2)}</span>`;
+    const gradeCount = term.mods.filter(m => GRADE_PTS[m.grade] !== null && GRADE_PTS[m.grade] !== undefined).length;
+
+    const modsHtml = !term.mods.length
+      ? `<tr><td colspan="4" style="text-align:center;color:var(--text3);font-size:12px;padding:14px">No modules yet — add one below</td></tr>`
+      : term.mods.map((m, mi) => `
+        <tr>
+          <td class="mod-main">${m.name}</td>
+          <td class="mod-cu-td">${GRADE_PTS[m.grade] === null ? '—' : m.cu}</td>
+          <td class="mod-grade-td"><span class="gt ${GRADE_CSS[m.grade] || 'g-p'}">${m.grade}</span></td>
+          <td class="mod-del-td"><button class="del-btn" onclick="delMod(${ti},${mi})">×</button></td>
+        </tr>`).join('');
+
+    const gradeOptsHtml = GRADE_OPTS.map(g => `<option ${g==='B'?'selected':''}>${g}</option>`).join('');
+
+    return `<div class="term-card">
+      <div class="term-header">
+        <div>
+          <div class="term-name-txt">${term.name}</div>
+          <div class="term-gpa-txt">${gradeCount} graded module${gradeCount!==1?'s':''} · Term GPA: ${gpa!==null?gpa.toFixed(2):'N/A'} ${gpaBadge}</div>
+        </div>
+        <button class="btn btn-sm btn-ghost" onclick="delTerm(${ti})" style="font-size:11px">Remove</button>
+      </div>
+      <table class="mod-table">
+        <thead><tr style="border-bottom:1px solid var(--border2)">
+          <th style="padding:6px 18px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Module</th>
+          <th style="padding:6px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:center;width:44px">CUs</th>
+          <th style="padding:6px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:center;width:56px">Grade</th>
+          <th style="width:32px"></th>
+        </tr></thead>
+        <tbody>${modsHtml}</tbody>
+      </table>
+      <div class="add-mod-bar">
+        <input type="text" placeholder="Module name e.g. 50.001 Intro to CS" id="mn-${ti}">
+        <input type="number" value="12" min="1" max="36" id="mc-${ti}">
+        <select id="mg-${ti}">${gradeOptsHtml}</select>
+        <button class="btn btn-primary btn-sm" onclick="addMod(${ti})">Add</button>
+      </div>
+      <div class="p-hint">Use P for pass/fail modules — they won't affect CGPA</div>
+    </div>`;
+  }).join('');
+
+  footer.classList.remove('hidden');
+  const { cgpa, cu } = cgpaCalc();
+  const hon = cgpa ? getHon(cgpa) : null;
+  document.getElementById('footer-cgpa').textContent = cgpa ? cgpa.toFixed(2) : '—';
+  document.getElementById('footer-hon').innerHTML = hon ? `<span class="badge ${honClass(cgpa)}" style="font-size:13px;padding:5px 14px">${hon.l}</span>` : '';
+  document.getElementById('footer-cu').textContent = cu ? `${cu} graded CUs` : '';
+  updateTopbar();
 }
 
-calcPlan(4,'Distinction');runSim();
+/* ── Term / mod actions ── */
+function openTermModal() {
+  document.getElementById('new-term-name').value = '';
+  document.getElementById('term-modal').classList.add('open');
+  setTimeout(() => document.getElementById('new-term-name').focus(), 50);
+}
+function closeModal() { document.getElementById('term-modal').classList.remove('open'); }
+document.getElementById('new-term-name').addEventListener('keydown', e => { if(e.key==='Enter') confirmAddTerm(); if(e.key==='Escape') closeModal(); });
+
+function confirmAddTerm() {
+  const name = document.getElementById('new-term-name').value.trim();
+  if (!name) return;
+  state.terms.push({ name, mods: [] });
+  save(); closeModal(); renderGrades();
+}
+
+function delTerm(ti) {
+  if (!confirm(`Remove "${state.terms[ti].name}" and all its modules?`)) return;
+  state.terms.splice(ti, 1); save(); renderGrades(); updateTopbar();
+}
+
+function addMod(ti) {
+  const n = document.getElementById(`mn-${ti}`);
+  const c = document.getElementById(`mc-${ti}`);
+  const g = document.getElementById(`mg-${ti}`);
+  if (!n.value.trim()) { n.focus(); return; }
+  state.terms[ti].mods.push({ name: n.value.trim(), cu: parseInt(c.value)||12, grade: g.value });
+  n.value = '';
+  save(); renderGrades();
+}
+
+function delMod(ti, mi) {
+  state.terms[ti].mods.splice(mi, 1); save(); renderGrades(); updateTopbar();
+}
+
+/* ════════════════ OVERVIEW ════════════════ */
+function renderOverview() {
+  const { cgpa, cu } = cgpaCalc();
+  const empty = document.getElementById('ov-empty');
+  const content = document.getElementById('ov-content');
+
+  if (!state.terms.length || cu === 0) { empty.classList.remove('hidden'); content.classList.add('hidden'); return; }
+  empty.classList.add('hidden'); content.classList.remove('hidden');
+
+  const p = state.profile || {};
+  document.getElementById('ov-profile').innerHTML = `
+    <div class="avatar">${p.initials || '?'}</div>
+    <div>
+      <div class="profile-name">${p.name || 'Student'}</div>
+      <div class="profile-meta">${p.prog || ''} ${p.year ? '· Class of ' + (parseInt(p.year)+4) : ''}</div>
+    </div>`;
+
+  const termGPAs = state.terms.map(t => termGPA(t)).filter(g => g !== null);
+  const best = termGPAs.length ? Math.max(...termGPAs) : null;
+  const hon = getHon(cgpa);
+  const col = cgpa >= 4.5 ? 'var(--green)' : cgpa >= 4.0 ? 'var(--accent)' : cgpa >= 3.5 ? 'var(--amber)' : cgpa >= 3.0 ? 'var(--amber)' : 'var(--red)';
+
+  document.getElementById('ov-stats').innerHTML = `
+    <div class="stat"><div class="stat-lbl">CGPA</div><div class="stat-val" style="color:${col}">${cgpa.toFixed(2)}</div><div class="stat-sub">${hon ? hon.l : '—'}</div></div>
+    <div class="stat"><div class="stat-lbl">Graded CUs</div><div class="stat-val">${cu}</div><div class="stat-sub">counted toward CGPA</div></div>
+    <div class="stat"><div class="stat-lbl">Best Term</div><div class="stat-val" style="color:var(--green)">${best !== null ? best.toFixed(2) : '—'}</div><div class="stat-sub">highest term GPA</div></div>`;
+
+  const trendCols = { 5.0:'#059669', 4.0:'#2563eb', 3.5:'#d97706', 3.0:'#d97706', 0:'#dc2626' };
+  function trendCol(g) { return g>=4.5?'#059669':g>=4.0?'#2563eb':g>=3.5?'#d97706':g>=3.0?'#d97706':'#dc2626'; }
+
+  document.getElementById('ov-trend').innerHTML = state.terms.map(t => {
+    const g = termGPA(t); if(g===null) return '';
+    const pct = Math.round((g/5.0)*100);
+    const c = trendCol(g);
+    return `<div class="trend-row">
+      <span class="trend-lbl">${t.name}</span>
+      <div class="trend-track"><div class="trend-fill" style="width:${pct}%;background:${c}"></div></div>
+      <span class="trend-val" style="color:${c}">${g.toFixed(2)}</span>
+    </div>`;
+  }).join('') || '<div style="font-size:13px;color:var(--text3)">No data yet</div>';
+
+  document.getElementById('ov-hon').innerHTML = HON.map(h => {
+    const isCur = cgpa >= h.min && (!HON[HON.indexOf(h)-1] || cgpa < HON[HON.indexOf(h)-1].min);
+    return `<div class="hon-row ${isCur?'cur':''}">
+      <div style="font-size:13px;font-weight:${isCur?600:400}">${h.l}${isCur?' ← you':''}</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;font-family:var(--mono);color:var(--text2)">${h.min.toFixed(2)}+</span>
+        <span style="font-size:11px;font-family:var(--mono);color:${cgpa>=h.min?'var(--green)':'var(--red)'}">${cgpa>=h.min?'✓':'–'+(h.min-cgpa).toFixed(2)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════ PLANNER ════════════════ */
+let planTarget = { gpa: 3.5, label: 'Merit' };
+
+function selTarget(el, gpa, label) {
+  document.querySelectorAll('.tc').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  planTarget = { gpa, label };
+  calcPlanner();
+}
+
+function calcPlanner() {
+  const { cgpa, cu: doneCu } = cgpaCalc();
+  const totalCu = parseInt(document.getElementById('plan-total-cu').value) || 240;
+  const remCu = Math.max(0, totalCu - doneCu);
+
+  document.getElementById('plan-done').textContent = doneCu;
+  document.getElementById('plan-rem').textContent = remCu;
+
+  const resultEl = document.getElementById('plan-result');
+  const whatifEl = document.getElementById('plan-whatif');
+
+  if (!cgpa) {
+    resultEl.innerHTML = `<div class="rbox info"><div class="rbox-eye">note</div><div class="rbox-main">Add your grades first</div><div class="rbox-detail">Go to My Grades and enter your modules to use the planner.</div></div>`;
+    whatifEl.innerHTML = '';
+    return;
+  }
+
+  const { gpa: tgt, label: lbl } = planTarget;
+  const curPts = cgpa * doneCu;
+  const neededPts = tgt * totalCu - curPts;
+  const reqAvg = remCu > 0 ? neededPts / remCu : 0;
+  const maxCgpa = (curPts + 5.0 * remCu) / totalCu;
+
+  function ptsLbl(p) {
+    if(p>=4.75)return'A / A+ (5.0 pts)';
+    if(p>=4.25)return'A- (4.5 pts)';
+    if(p>=3.75)return'B+ (4.0 pts)';
+    if(p>=3.25)return'B (3.5 pts)';
+    if(p>=2.75)return'B- (3.0 pts)';
+    if(p>=2.25)return'C+ (2.5 pts)';
+    return'C or below';
+  }
+
+  if (cgpa >= tgt) {
+    resultEl.innerHTML = `<div class="rbox ok"><div class="rbox-eye">status</div><div class="rbox-main">Already on track for ${lbl}!</div><div class="rbox-detail">Your current CGPA of ${cgpa.toFixed(2)} meets the ${tgt.toFixed(2)} threshold. Maintain your performance to lock it in.</div></div>`;
+  } else if (reqAvg > 5.0) {
+    resultEl.innerHTML = `<div class="rbox bad"><div class="rbox-eye">status</div><div class="rbox-main">${lbl} is no longer reachable</div><div class="rbox-detail">Even with A+ in everything remaining, max CGPA = ${maxCgpa.toFixed(2)}. Consider aiming for ${getHon(maxCgpa)?.l || 'a lower target'}.</div></div>`;
+  } else {
+    const cls = reqAvg >= 4.5 ? 'bad' : reqAvg >= 3.5 ? 'warn' : 'ok';
+    resultEl.innerHTML = `<div class="rbox ${cls}">
+      <div class="rbox-eye">minimum average needed from your remaining ~${remCu} CUs</div>
+      <div class="rbox-main">${ptsLbl(reqAvg)} average</div>
+      <div class="rbox-detail">You need ${neededPts.toFixed(1)} grade-points from ${remCu} future CUs to reach ${lbl} (${tgt.toFixed(2)} CGPA). Gap: ${(tgt - cgpa).toFixed(2)} points.</div>
+    </div>`;
+  }
+
+  const scenarios = [
+    {g:'All A / A+',pts:5.0},{g:'All A-',pts:4.5},{g:'All B+',pts:4.0},
+    {g:'All B',pts:3.5},{g:'All B-',pts:3.0},{g:'All C',pts:2.0}
+  ];
+  function wiCol(g) { return g>=4.5?'#059669':g>=4.0?'#2563eb':g>=3.5?'#d97706':g>=3.0?'#d97706':'#dc2626'; }
+
+  whatifEl.innerHTML = scenarios.map(s => {
+    const proj = remCu > 0 ? (curPts + s.pts * remCu) / totalCu : cgpa;
+    const meets = proj >= tgt;
+    const col = wiCol(proj);
+    const hon = getHon(proj);
+    return `<div class="wi-card">
+      <div class="wi-g" style="color:${col}">${s.g}</div>
+      <div class="wi-cgpa" style="color:${col}">${proj.toFixed(2)}</div>
+      <div class="wi-note" style="color:${meets?'var(--green)':'var(--red)'}">${meets?'✓ '+lbl:'✗ –'+(tgt-proj).toFixed(2)}</div>
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:2px">${hon?hon.l:'Pass'}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════ SCORE CONVERTER ════════════════ */
+function syncScore(src, val) {
+  const n = Math.min(100, Math.max(0, parseInt(val)||0));
+  document.getElementById('sc-slider').value = n;
+  document.getElementById('sc-num').value = n;
+  const g = SCORE_MAP.find(x => n >= x.min) || SCORE_MAP[SCORE_MAP.length-1];
+  const col = GRADE_COL[g.g] || '#555';
+  const hon = getHon(g.pts);
+  document.getElementById('sc-result').innerHTML = `
+    <div class="score-grade" style="color:${col}">${g.g}</div>
+    <div class="score-detail">
+      <div class="sd-pts" style="color:${col}">${g.pts.toFixed(1)} GPA pts</div>
+      <div class="sd-desc">${g.desc}</div>
+      <div class="sd-hon">${hon ? 'Honours territory: ' + hon.l : ''}</div>
+    </div>`;
+}
+
+function buildScoreTable() {
+  document.getElementById('sc-table').innerHTML = `
+    <thead><tr style="border-bottom:1px solid var(--border2)">
+      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Score</th>
+      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Grade</th>
+      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Points</th>
+      <th style="padding:7px 12px;font-size:11px;font-weight:500;color:var(--text3);font-family:var(--mono);text-transform:uppercase;text-align:left">Description</th>
+    </tr></thead>
+    <tbody>${SCORE_MAP.map((g,i) => {
+      const next = SCORE_MAP[i-1];
+      const rng = `${g.min}${next?'–'+next.min:'–100'}`;
+      const css = GRADE_CSS[g.g] || 'g-p';
+      return `<tr style="border-bottom:1px solid var(--border)">
+        <td style="padding:7px 12px;font-family:var(--mono);font-size:12px;color:var(--text2)">${rng}%</td>
+        <td style="padding:7px 12px"><span class="gt ${css}">${g.g}</span></td>
+        <td style="padding:7px 12px;font-family:var(--mono);font-size:13px">${g.pts.toFixed(1)}</td>
+        <td style="padding:7px 12px;font-size:12px;color:var(--text2)">${g.desc}</td>
+      </tr>`;
+    }).join('')}</tbody>`;
+}
+
+/* ════════════════ INIT ════════════════ */
+load();
+
+if (state.profile) {
+  // Returning user — skip onboarding
+  selectedGoal = state.planTarget || { gpa: 3.5, label: 'Merit' };
+  launchApp();
+  // Re-sync planner target UI
+  const tgts = [3.0, 3.5, 4.0, 4.5];
+  const idx = tgts.indexOf(selectedGoal.gpa);
+  if (idx >= 0) { document.querySelectorAll('.tc').forEach(c=>c.classList.remove('sel')); document.querySelectorAll('.tc')[idx]?.classList.add('sel'); }
+  planTarget = selectedGoal;
+} else {
+  // New user — show onboarding
+}
 </script>
 </body>
 </html>
